@@ -1,0 +1,95 @@
+/* One small personal space, outside the reading flow. */
+.tuotuo-pocket-trigger{
+  appearance:none;display:inline-flex;align-items:center;gap:8px;position:relative;
+  margin:0;border:0;border-radius:0;padding:0;background:transparent;color:inherit;
+  font:inherit!important;letter-spacing:inherit;line-height:20px!important;cursor:pointer;
+  vertical-align:middle;isolation:isolate;
+}
+.tuotuo-pocket-trigger::before{content:"";position:absolute;inset:-12px -8px;z-index:-1}
+.tuotuo-pocket-trigger:focus-visible{outline:1px solid #191d20;outline-offset:6px}
+.pocket-trigger-mark{width:9px;height:9px;position:relative;transition:transform 180ms ease}
+.pocket-trigger-mark::before,.pocket-trigger-mark::after{content:"";position:absolute;background:currentColor}
+.pocket-trigger-mark::before{width:9px;height:1px;left:0;top:4px}
+.pocket-trigger-mark::after{width:1px;height:9px;left:4px;top:0}
+.tuotuo-pocket-trigger[aria-expanded="true"] .pocket-trigger-mark{transform:rotate(45deg)}
+.tuotuo-pocket{
+  --pocket-paper:rgba(255,255,255,.92);--pocket-line:#617789;--pocket-muted:#607586;
+  box-sizing:border-box;position:fixed;inset:auto;margin:0;padding:0;
+  width:min(640px,calc(100vw - 24px));overflow:visible;pointer-events:none;
+  border:0;border-radius:0;background:transparent;color:var(--pocket-line);
+  z-index:10020;font-family:"Archivo Study",Arial,sans-serif;font-size:14px;line-height:1.4;
+  overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--pocket-muted) transparent;
+  transform-origin:0 24px;
+}
+.tuotuo-pocket.on-dark{--pocket-paper:rgba(14,18,21,.92);--pocket-line:#dce5eb;--pocket-muted:#bdcbd5}
+/* Let the drawings float without competing with the page's lettering. No overlay or blur. */
+.tuotuo-pocket-open main>:not(.home-page),.tuotuo-pocket-open .home-animation canvas{opacity:.16;transition:opacity 160ms ease}
+.tuotuo-pocket[hidden]{display:none!important}
+.tuotuo-pocket::backdrop{background:transparent;pointer-events:none}
+.tuotuo-pocket-settling main>:not(.home-page),.tuotuo-pocket-settling .home-animation canvas{transition:opacity 150ms ease}
+.tuotuo-pocket.is-closing{pointer-events:none}
+.tuotuo-pocket.is-closing .pocket-object,.tuotuo-pocket.is-closing .pocket-close{pointer-events:none}
+.pocket-heading{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 4px 22px}
+.pocket-heading h2{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.pocket-close{display:grid;place-items:center;width:44px;height:44px;flex:0 0 44px;margin-left:auto;border:0;border-radius:50%;padding:0;background:transparent;color:inherit;cursor:pointer;pointer-events:auto;opacity:.75;transition:opacity 120ms ease}
+.pocket-close svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round}
+.pocket-close:hover{opacity:1}
+.pocket-close:focus-visible{outline:1px solid currentColor;outline-offset:-4px}
+.pocket-table{position:relative;aspect-ratio:560/440;margin:0 14px 2px;isolation:isolate}
+.pocket-object{--angle:0deg;position:absolute;display:block;aspect-ratio:1;margin:0;padding:0;border:0;border-radius:5px;background:transparent;color:inherit;cursor:pointer;pointer-events:auto;transform:rotate(var(--angle));-webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px}
+.pocket-object:focus-visible{outline:1px dashed currentColor;outline-offset:1px}
+.pocket-art{display:block;width:100%;height:100%;font:inherit!important;letter-spacing:inherit;opacity:.83;transition:opacity 120ms ease}
+.pocket-object:hover .pocket-art,.pocket-object.is-selected .pocket-art,.pocket-object:focus-visible .pocket-art{opacity:1}
+.pocket-art svg{display:block;width:100%;height:100%;overflow:visible}
+/* An uneven arrangement: lighter tools above, denser objects below. */
+.pocket-object--compass{left:7%;top:0%;width:25%;--angle:-12deg}
+.pocket-object--ballet{left:35%;top:12%;width:28%;--angle:8deg}
+.pocket-object--disco{left:73%;top:0%;width:21%;--angle:3deg}
+.pocket-object--pencil{left:0%;top:34%;width:21%;--angle:-19deg}
+.pocket-object--wine{left:77%;top:28%;width:22%;--angle:11deg}
+.pocket-object--laptop{left:51%;top:41%;width:32%;--angle:-8deg}
+.pocket-object--book{left:24%;top:42%;width:28%;--angle:8deg}
+.pocket-object--cat{left:15%;top:61%;width:30%;--angle:-4deg;z-index:2}
+.pocket-object--tennis{left:64%;top:69%;width:19%;--angle:13deg;z-index:2}
+/* The surrounding objects occupy separate edge slots, so every one stays reachable. */
+.pocket-table.is-pair-active .pocket-object{opacity:.38;transform:rotate(var(--angle)) scale(.95)}
+.pocket-table.is-pair-active .pocket-object--compass{transform:rotate(0deg) scale(.85)}
+.pocket-table.is-pair-active .pocket-object--ballet{transform:translateY(-34%) rotate(0deg) scale(.85)}
+.pocket-table.is-pair-active .pocket-object--disco{transform:rotate(0deg) scale(.9)}
+.pocket-table.is-pair-active .pocket-object--pencil{transform:rotate(0deg) scale(.85)}
+.pocket-table.is-pair-active .pocket-object--wine{transform:translateX(5%) rotate(0deg) scale(.82)}
+.pocket-table.is-pair-active .pocket-object--book{transform:translate(-92%,60%) rotate(0deg) scale(.78)}
+.pocket-table.is-pair-active .pocket-object--laptop{transform:translate(62.5%,51%) rotate(0deg) scale(.75)}
+.pocket-table.is-pair-active .pocket-object--cat{opacity:1;transform:translate(40%,-42%) rotate(-4deg) scale(1.12);z-index:4}
+.pocket-table.is-pair-active .pocket-object--tennis{opacity:1;transform:translate(-70%,-70%) rotate(13deg) scale(1.1);z-index:4}
+.pocket-table.is-pair-active :is(.pocket-object--cat,.pocket-object--tennis) .pocket-art{opacity:1}
+.pocket-table.is-pair-active .pocket-object:focus-visible{opacity:1}
+.tuotuo-pocket:not(.on-dark) .pocket-table.is-pair-active .pocket-object:not(.pocket-object--cat):not(.pocket-object--tennis){opacity:.8}
+.compass-leg{transform-box:view-box;transform-origin:60px 34px}
+.ballet-swing{transform-box:view-box;transform-origin:67px 20px}
+.cat-head{transform-box:view-box;transform-origin:49px 77px}
+.cat-eye{transform-box:fill-box;transform-origin:center}
+.tennis-ball{transform-box:view-box;transform-origin:60px 58px}
+.cat-tail{transform-box:view-box;transform-origin:80px 75px}
+.pencil-body{transform-box:view-box;transform-origin:34px 96px}
+.book-page{transform-box:view-box;transform-origin:60px 62px}
+.wine-bottle{transform-box:view-box;transform-origin:68px 109px}
+.disco-glints{opacity:0}
+.pocket-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:13px 22px 0;padding:13px 0 16px;font-size:12px;line-height:18px;min-height:18px}
+.pocket-object-name{font:inherit!important;font-weight:500!important;letter-spacing:inherit;color:inherit}
+.pocket-hint{font:inherit!important;letter-spacing:inherit;color:var(--pocket-muted)}
+.pocket-announcement{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:800px){
+  .tuotuo-pocket-open .site-nav>.page-layout{opacity:.16;transition:opacity 160ms ease}
+  .tuotuo-pocket{width:min(480px,calc(100vw - 24px),max(280px,calc((100dvh - 186px)*1.27)));left:50%;top:auto;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);transform-origin:50% 100%}
+  .tuotuo-pocket-settling .site-nav>.page-layout{transition:opacity 150ms ease}
+  .pocket-heading{padding-left:18px}
+  .pocket-heading h2{font-size:17px}
+  .pocket-table{margin-inline:9px}
+  .pocket-caption{margin-inline:18px}
+}
+@media(pointer:coarse){.pocket-hint{font-size:0!important}.pocket-hint::after{content:"Tap to explore.";font-size:12px}}
+@media(max-height:440px){.tuotuo-pocket{width:min(340px,calc(100vw - 24px));top:70px;bottom:12px;overflow:auto}.pocket-heading{padding-top:0;padding-bottom:0}.pocket-table{aspect-ratio:560/400}.pocket-caption{margin-top:0;padding-bottom:6px}}
+@media(prefers-reduced-motion:reduce){
+  .pocket-trigger-mark,.pocket-art,.pocket-close,.tuotuo-pocket-open main>:not(.home-page),.tuotuo-pocket-open .home-animation canvas,.tuotuo-pocket-open .site-nav>.page-layout,.tuotuo-pocket-settling main>:not(.home-page),.tuotuo-pocket-settling .home-animation canvas,.tuotuo-pocket-settling .site-nav>.page-layout{transition:none}
+}

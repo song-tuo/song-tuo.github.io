@@ -1,0 +1,40 @@
+/* Local type study: the reading text keeps Atelier Next's existing face. */
+@font-face{
+  font-family:"Archivo Study";
+  src:url("fonts/Archivo-Variable.ttf") format("truetype");
+  font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap;
+}
+.vt-target,.vt-target :is(a,span,s,b,strong){
+  font-family:"Archivo Study",Arial,Helvetica,sans-serif!important;
+  font-variation-settings:normal!important;
+  font-feature-settings:normal!important;
+  font-variant:normal!important;
+  font-weight:var(--vt-base-weight,460)!important;
+  font-stretch:100%!important;
+  font-kerning:none;
+}
+.vt-target{--vt-base-weight:460;isolation:isolate}
+.vt-target[data-vt-kind="name"]{--vt-base-weight:540;letter-spacing:0!important}
+.vt-target[data-vt-kind="index"]{--vt-base-weight:430}
+/* Letter boxes must not repeat the original Cargo heading's hanging indent. */
+.vt-target :is(.vt-word,.vt-cell,.vt-glyph){text-indent:0!important}
+.vt-target .vt-word{display:inline-block;white-space:nowrap;font-size:inherit!important;line-height:inherit!important}
+.vt-target .vt-cell{display:inline-block;position:relative;font-size:inherit!important;line-height:inherit!important;vertical-align:baseline}
+.vt-target .vt-glyph{
+  display:inline-block;font-size:inherit!important;line-height:inherit!important;
+  font-weight:var(--vt-weight,var(--vt-base-weight,460))!important;
+  font-stretch:var(--vt-width,100%)!important;
+  transform-origin:left center;
+}
+.vt-target s .vt-glyph{text-decoration:line-through}
+.vt-target a{text-decoration:inherit}
+.vt-target[data-vt-kind="title"]{cursor:default}
+.site-nav bodycopy > h1 a[href*="contact"]{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-weight:700!important;
+  color:#111!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .vt-target .vt-cell{transform:none!important}
+  .vt-target .vt-glyph{font-stretch:100%!important;font-weight:var(--vt-base-weight,460)!important}
+}

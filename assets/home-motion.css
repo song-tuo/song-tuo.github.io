@@ -1,0 +1,17 @@
+/* Keep the original media widths, intrinsic ratios and inline placement. */
+.home-animation{background:#000;container-type:inline-size;overflow:hidden}
+.home-animation canvas{display:block;width:100%;height:auto;aspect-ratio:var(--ratio);background:#000}
+.home-animation [data-text-field]{position:absolute;inset:0;pointer-events:none}
+.home-animation[data-home-motion="bottom"]>canvas:not([data-text-field]){position:relative;background:transparent}
+.home-motion-fallback{position:absolute;inset:0;margin:0;color:#fff;overflow:hidden;pointer-events:none;font-feature-settings:normal;letter-spacing:normal}
+.home-animation.motion-ready .home-motion-fallback{clip-path:inset(50%);width:1px;height:1px;white-space:nowrap}
+.home-motion-fallback--top{display:flex;align-items:center;justify-content:center;white-space:nowrap;font:2.2cqw/1 monospace;letter-spacing:.035cqw}
+.home-motion-fallback--bottom{text-align:left;font:700 5.04cqw/1.122 Arial,Helvetica,sans-serif;padding:0 1.3cqw}
+.home-motion-fallback--bottom span{display:block;white-space:nowrap;font:inherit;letter-spacing:inherit}
+.home-motion-toggle{position:absolute;right:9px;bottom:8px;min-height:28px;padding:6px 9px;border:1px solid #555;background:rgba(0,0,0,.82);color:#ddd;font:11px/1.1 Arial,Helvetica,sans-serif;opacity:0;z-index:1;cursor:pointer;transition:opacity .22s ease,border-color .22s ease,color .22s ease}
+.home-animation:hover .home-motion-toggle,.home-motion-toggle:focus-visible{opacity:1}
+.home-motion-toggle:hover{border-color:#999;color:#fff}
+.home-motion-toggle:focus-visible{outline:1px solid #fff;outline-offset:3px}
+.home-motion-toggle[hidden]{display:none}
+@media(hover:none){.home-motion-toggle{opacity:.65;min-height:36px}}
+@media(prefers-reduced-motion:reduce){.home-motion-toggle{transition:none}}

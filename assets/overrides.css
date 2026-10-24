@@ -1,0 +1,7 @@
+:root{font-size:1.44vh}
+sup,sub{font-size:1em}
+bodycopy :where(*){font-size:calc(var(--font-size,1.4rem) * var(--font-scale,1))}
+media-item+gallery-grid,media-item+gallery-slideshow,gallery-grid+media-item,gallery-slideshow+media-item{margin-top:1rem}
+gallery-grid>media-item,gallery-slideshow>media-item,gallery-justify>media-item{margin-top:0}
+.site-nav .page-layout{width:100%}
+@media(max-width:800px){:root{font-size:10px}main bodycopy,.site-nav bodycopy,.site-nav .small-title,main .team{--font-size:16px}main h1,.site-nav h1{--font-size:28px}main .copy{--font-size:14px}.site-nav .big-title{--font-size:19px}}

@@ -1,0 +1,23 @@
+/* A quiet, fixed-width counter; only the current number moves after decoding. */
+.slide-counter {
+  display:inline-flex;
+  align-items:center;
+}
+.slide-counter-current {
+  position:relative;
+  display:inline-block;
+  flex:none;
+  width:calc(var(--counter-digits, 2) * (1ch + .06em));
+  height:1em;
+  overflow:hidden;
+}
+.slide-counter-digit {
+  display:block;
+  white-space:nowrap;
+}
+.slide-counter-outgoing {
+  position:absolute;
+  inset:0;
+}
+.slide-counter span { font:inherit !important; letter-spacing:inherit; }
+.slide-counter-total { white-space:pre; }

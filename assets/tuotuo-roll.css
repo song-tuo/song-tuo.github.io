@@ -1,0 +1,29 @@
+/* The existing Tuo Tuo label turns vertically, without moving the index. */
+.tuotuo-roll,.tuotuo-prism,.tuotuo-face{
+  font:inherit!important;letter-spacing:inherit;text-indent:0;
+}
+.tuotuo-roll{
+  --tuotuo-depth:10px;
+  display:inline-block;vertical-align:middle;
+  height:20px;perspective:360px;perspective-origin:50% 50%;
+}
+.tuotuo-prism{
+  display:block;position:relative;height:20px;
+  transform-style:preserve-3d;transform-origin:50% 50%;
+  transform:translateZ(-10px);
+}
+.tuotuo-face{
+  display:block;white-space:nowrap;height:20px;line-height:20px!important;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+.tuotuo-face:first-child{position:relative;transform:translateZ(var(--tuotuo-depth))}
+.tuotuo-face:not(:first-child){position:absolute;inset:0}
+.tuotuo-face:nth-child(2){transform:rotateX(90deg) translateZ(var(--tuotuo-depth))}
+.tuotuo-face:nth-child(3){transform:rotateX(180deg) translateZ(var(--tuotuo-depth))}
+.tuotuo-face:nth-child(4){transform:rotateX(-90deg) translateZ(var(--tuotuo-depth))}
+.tuotuo-roll[data-turning] .tuotuo-prism{will-change:transform}
+@media(prefers-reduced-motion:reduce){
+  .tuotuo-prism{transform:none!important}
+  .tuotuo-face:first-child{transform:none}
+  .tuotuo-face:not(:first-child){display:none}
+}

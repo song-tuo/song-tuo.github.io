@@ -1,0 +1,14 @@
+/* Serif accents only in the two opening animation panels. */
+@font-face {
+  font-family:"Bodoni Moda";
+  src:url("fonts/BodoniModa-Variable.ttf") format("truetype");
+  font-weight:400 900; font-style:normal; font-display:swap;
+}
+@font-face {
+  font-family:"Bodoni Moda";
+  src:url("fonts/BodoniModa-Italic-Variable.ttf") format("truetype");
+  font-weight:400 900; font-style:italic; font-display:swap;
+}
+:root { --signature-font:"Bodoni Moda",Georgia,"Times New Roman",serif; }
+.home-motion-fallback--top { font-family:var(--signature-font); font-weight:600; }
+.home-motion-fallback--bottom { font:500 5.04cqw/1.122 var(--signature-font); }

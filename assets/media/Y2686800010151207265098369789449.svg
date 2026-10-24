@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_3" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1224 792">
+  <!-- Generator: Adobe Illustrator 29.8.2, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke-dasharray: 2 2;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8 {
+        stroke-miterlimit: 10;
+      }
+
+      .st0, .st1, .st3, .st4, .st5, .st6, .st7, .st8 {
+        stroke: #231f20;
+      }
+
+      .st0, .st2, .st3, .st4, .st5, .st6, .st7, .st8 {
+        fill: none;
+      }
+
+      .st0, .st3, .st4, .st5, .st6, .st7, .st8 {
+        stroke-width: .8px;
+      }
+
+      .st9, .st10 {
+        font-size: 25.64px;
+      }
+
+      .st9, .st11, .st12 {
+        fill: #231f20;
+        font-family: Helvetica, Helvetica;
+      }
+
+      .st1 {
+        fill: #fff;
+        stroke-width: .5px;
+      }
+
+      .st13 {
+        fill: #a3a3a3;
+      }
+
+      .st2 {
+        stroke: #a3a3a3;
+        stroke-width: .7px;
+      }
+
+      .st14, .st11 {
+        font-size: 21.37px;
+      }
+
+      .st3 {
+        stroke-dasharray: 1.98 1.98;
+      }
+
+      .st4 {
+        stroke-dasharray: 1.99 1.99;
+      }
+
+      .st5 {
+        stroke-dasharray: 4.03 4.03;
+      }
+
+      .st6 {
+        stroke-dasharray: 4.02 4.02;
+      }
+
+      .st8 {
+        stroke-dasharray: 3.96 3.96;
+      }
+    </style>
+  </defs>
+  <rect class="st1" x="31.94" y="57.09" width="1158.95" height="674.83"/>
+  <rect class="st7" x="489.35" y="252.66" width="198.06" height="67.91"/>
+  <rect class="st7" x="516.94" y="361.95" width="141.59" height="41.63"/>
+  <rect class="st7" x="491.3" y="452.21" width="194.17" height="67.91"/>
+  <rect class="st7" x="113.03" y="529.51" width="134.75" height="46.69"/>
+  <rect class="st7" x="467.03" y="568.75" width="248.02" height="52.17"/>
+  <rect class="st7" x="924.47" y="335.13" width="208.5" height="44.03"/>
+  <rect class="st7" x="927.12" y="520.31" width="208.5" height="44.03"/>
+  <g>
+    <polyline class="st7" points="780.43 678.44 780.43 680.44 778.43 680.44"/>
+    <line class="st5" x1="774.4" y1="680.44" x2="405.65" y2="680.44"/>
+    <polyline class="st7" points="403.64 680.44 401.64 680.44 401.64 678.44"/>
+    <line class="st6" x1="401.64" y1="674.42" x2="401.64" y2="217.59"/>
+    <polyline class="st7" points="401.64 215.58 401.64 213.58 403.64 213.58"/>
+    <line class="st5" x1="407.67" y1="213.58" x2="776.42" y2="213.58"/>
+    <polyline class="st7" points="778.43 213.58 780.43 213.58 780.43 215.58"/>
+    <line class="st6" x1="780.43" y1="219.61" x2="780.43" y2="676.43"/>
+  </g>
+  <g>
+    <polyline class="st7" points="1170.1 678.44 1170.1 680.44 1168.1 680.44"/>
+    <line class="st8" x1="1164.14" y1="680.44" x2="888.66" y2="680.44"/>
+    <polyline class="st7" points="886.68 680.44 884.68 680.44 884.68 678.44"/>
+    <line class="st6" x1="884.68" y1="674.42" x2="884.68" y2="217.59"/>
+    <polyline class="st7" points="884.68 215.58 884.68 213.58 886.68 213.58"/>
+    <line class="st8" x1="890.64" y1="213.58" x2="1166.12" y2="213.58"/>
+    <polyline class="st7" points="1168.1 213.58 1170.1 213.58 1170.1 215.58"/>
+    <line class="st6" x1="1170.1" y1="219.61" x2="1170.1" y2="676.43"/>
+  </g>
+  <text class="st12" transform="translate(502.88 282.26)"><tspan class="st10"><tspan x="0" y="0">Node.js Server</tspan></tspan><tspan class="st14"><tspan x="37.3" y="25.64">(image in)</tspan></tspan></text>
+  <text class="st9" transform="translate(126.97 561.4)"><tspan x="0" y="0">ChatGPT</tspan></text>
+  <rect class="st7" x="93.4" y="343.42" width="174.01" height="67.91"/>
+  <text class="st12" transform="translate(107.73 371.07)"><tspan class="st10"><tspan x="0" y="0">ESP32-CAM</tspan></tspan><tspan class="st14"><tspan x="16.84" y="25.64">(640 X 480)</tspan></tspan></text>
+  <text class="st9" transform="translate(943.03 552.74)"><tspan x="0" y="0">Thermal Printer</tspan></text>
+  <text class="st9" transform="translate(989 365.77)"><tspan x="0" y="0">Button</tspan></text>
+  <rect class="st7" x="924.47" y="425" width="208.5" height="44.03"/>
+  <text class="st9" transform="translate(942 455.63)"><tspan x="0" y="0">Microcontroller</tspan></text>
+  <g>
+    <polyline class="st7" points="687.41 179.01 687.41 180.01 686.41 180.01"/>
+    <line class="st3" x1="684.43" y1="180.01" x2="491.34" y2="180.01"/>
+    <polyline class="st7" points="490.35 180.01 489.35 180.01 489.35 179.01"/>
+    <line class="st0" x1="489.35" y1="177.01" x2="489.35" y2="114.1"/>
+    <polyline class="st7" points="489.35 113.1 489.35 112.1 490.35 112.1"/>
+    <line class="st3" x1="492.33" y1="112.1" x2="685.42" y2="112.1"/>
+    <polyline class="st7" points="686.41 112.1 687.41 112.1 687.41 113.1"/>
+    <line class="st0" x1="687.41" y1="115.1" x2="687.41" y2="178.01"/>
+  </g>
+  <text class="st9" transform="translate(534.74 156.15)"><tspan x="0" y="0">Computer</tspan></text>
+  <g>
+    <polyline class="st7" points="279.44 179.01 279.44 180.01 278.44 180.01"/>
+    <line class="st3" x1="276.46" y1="180.01" x2="83.37" y2="180.01"/>
+    <polyline class="st7" points="82.38 180.01 81.38 180.01 81.38 179.01"/>
+    <line class="st0" x1="81.38" y1="177.01" x2="81.38" y2="114.1"/>
+    <polyline class="st7" points="81.38 113.1 81.38 112.1 82.38 112.1"/>
+    <line class="st3" x1="84.36" y1="112.1" x2="277.45" y2="112.1"/>
+    <polyline class="st7" points="278.44 112.1 279.44 112.1 279.44 113.1"/>
+    <line class="st0" x1="279.44" y1="115.1" x2="279.44" y2="178.01"/>
+  </g>
+  <text class="st9" transform="translate(154.55 156.15)"><tspan x="0" y="0">Input</tspan></text>
+  <g>
+    <polyline class="st7" points="1135.62 179.01 1135.62 180.01 1134.62 180.01"/>
+    <line class="st4" x1="1132.63" y1="180.01" x2="926.47" y2="180.01"/>
+    <polyline class="st7" points="925.47 180.01 924.47 180.01 924.47 179.01"/>
+    <line class="st0" x1="924.47" y1="177.01" x2="924.47" y2="114.1"/>
+    <polyline class="st7" points="924.47 113.1 924.47 112.1 925.47 112.1"/>
+    <line class="st4" x1="927.46" y1="112.1" x2="1133.62" y2="112.1"/>
+    <polyline class="st7" points="1134.62 112.1 1135.62 112.1 1135.62 113.1"/>
+    <line class="st0" x1="1135.62" y1="115.1" x2="1135.62" y2="178.01"/>
+  </g>
+  <text class="st9" transform="translate(936.08 155.39)"><tspan x="0" y="0">Device Interface</tspan></text>
+  <text class="st9" transform="translate(531.38 391.19)"><tspan x="0" y="0">ML Model</tspan></text>
+  <text class="st12" transform="translate(502.15 482.69)"><tspan class="st10"><tspan x="0" y="0">Delay Mapping</tspan></tspan><tspan class="st14"><tspan x="11.59" y="25.64">t = 4000 X (1-c)</tspan></tspan></text>
+  <text class="st9" transform="translate(474.91 603.98)"><tspan x="0" y="0">ESC/POS Formatter</tspan></text>
+  <text class="st11" transform="translate(805.24 424.66)"><tspan x="0" y="0">Serial</tspan><tspan x="7.72" y="51.28">Port</tspan></text>
+  <text class="st11" transform="translate(307.21 355.63)"><tspan x="0" y="0">Serial</tspan><tspan x="7.72" y="51.28">Port</tspan></text>
+  <text class="st11" transform="translate(298.3 531.11)"><tspan x="0" y="0">OpenAI</tspan><tspan x="19.01" y="51.28">API</tspan></text>
+  <g>
+    <line class="st2" x1="1030.04" y1="383.94" x2="1030.04" y2="418.35"/>
+    <polygon class="st13" points="1027.82 414.21 1028.48 413.97 1030.04 418.28 1031.61 413.97 1032.27 414.21 1030.04 420.33 1027.82 414.21"/>
+  </g>
+  <g>
+    <line class="st2" x1="587.68" y1="323.07" x2="587.68" y2="357.48"/>
+    <polygon class="st13" points="585.45 353.34 586.11 353.1 587.68 357.41 589.24 353.1 589.9 353.34 587.68 359.46 585.45 353.34"/>
+  </g>
+  <g>
+    <line class="st2" x1="587.68" y1="409.7" x2="587.68" y2="444.11"/>
+    <polygon class="st13" points="585.45 439.97 586.11 439.74 587.68 444.04 589.24 439.74 589.9 439.97 587.68 446.09 585.45 439.97"/>
+  </g>
+  <g>
+    <line class="st2" x1="587.68" y1="526.24" x2="587.68" y2="560.65"/>
+    <polygon class="st13" points="585.45 556.51 586.11 556.27 587.68 560.58 589.24 556.27 589.9 556.51 587.68 562.63 585.45 556.51"/>
+  </g>
+  <g>
+    <line class="st2" x1="783.79" y1="437.24" x2="876.07" y2="437.24"/>
+    <polygon class="st13" points="871.93 439.47 871.69 438.81 876 437.24 871.69 435.67 871.93 435.02 878.05 437.24 871.93 439.47"/>
+  </g>
+  <g>
+    <line class="st2" x1="878.05" y1="452.21" x2="785.77" y2="452.21"/>
+    <polygon class="st13" points="789.91 449.98 790.15 450.64 785.84 452.21 790.15 453.78 789.91 454.44 783.79 452.21 789.91 449.98"/>
+  </g>
+  <g>
+    <line class="st2" x1="275.46" y1="544.43" x2="386.93" y2="544.43"/>
+    <polygon class="st13" points="382.79 546.66 382.55 546 386.86 544.43 382.55 542.86 382.79 542.21 388.9 544.43 382.79 546.66"/>
+  </g>
+  <g>
+    <line class="st2" x1="388.9" y1="559.4" x2="279.56" y2="559.4"/>
+    <polygon class="st13" points="283.7 557.17 283.94 557.83 279.63 559.4 283.94 560.97 283.7 561.63 277.58 559.4 283.7 557.17"/>
+  </g>
+  <g>
+    <line class="st2" x1="275.46" y1="369.89" x2="386.93" y2="369.89"/>
+    <polygon class="st13" points="382.79 372.12 382.55 371.46 386.86 369.89 382.55 368.32 382.79 367.66 388.9 369.89 382.79 372.12"/>
+  </g>
+  <g>
+    <line class="st2" x1="388.9" y1="384.86" x2="279.56" y2="384.86"/>
+    <polygon class="st13" points="283.7 382.63 283.94 383.29 279.63 384.86 283.94 386.43 283.7 387.08 277.58 384.86 283.7 382.63"/>
+  </g>
+  <g>
+    <line class="st2" x1="1030.04" y1="476.48" x2="1030.04" y2="510.89"/>
+    <polygon class="st13" points="1027.82 506.75 1028.48 506.51 1030.04 510.82 1031.61 506.51 1032.27 506.75 1030.04 512.87 1027.82 506.75"/>
+  </g>
+</svg>

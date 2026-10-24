@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_4" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1224 792">
+  <!-- Generator: Adobe Illustrator 29.8.2, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <defs>
+    <style>
+      .st0, .st1 {
+        fill: #a3a3a3;
+      }
+
+      .st0, .st2, .st3 {
+        font-size: 25.75px;
+      }
+
+      .st0, .st3, .st4 {
+        font-family: Helvetica, Helvetica;
+      }
+
+      .st5, .st6, .st7, .st8, .st9 {
+        stroke-miterlimit: 10;
+      }
+
+      .st5, .st7, .st8, .st9 {
+        fill: none;
+        stroke: #a3a3a3;
+      }
+
+      .st6 {
+        fill: #fff;
+        stroke: #231f20;
+        stroke-width: .5px;
+      }
+
+      .st7 {
+        stroke-width: .7px;
+      }
+
+      .st8 {
+        stroke-dasharray: 3 3;
+      }
+
+      .st10 {
+        font-size: 21.46px;
+      }
+
+      .st3, .st4 {
+        fill: #231f20;
+      }
+
+      .st9 {
+        stroke-dasharray: 3 3;
+      }
+    </style>
+  </defs>
+  <rect class="st6" x="25.87" y="201.19" width="1163.74" height="415.52"/>
+  <g>
+    <line class="st7" x1="264.37" y1="261.1" x2="323" y2="261.1"/>
+    <polygon class="st1" points="318.86 263.33 318.62 262.67 322.93 261.1 318.62 259.53 318.86 258.87 324.98 261.1 318.86 263.33"/>
+  </g>
+  <g>
+    <line class="st7" x1="468.77" y1="261.1" x2="527.4" y2="261.1"/>
+    <polygon class="st1" points="523.26 263.33 523.02 262.67 527.33 261.1 523.02 259.53 523.26 258.87 529.37 261.1 523.26 263.33"/>
+  </g>
+  <g>
+    <line class="st7" x1="831.97" y1="261.1" x2="890.6" y2="261.1"/>
+    <polygon class="st1" points="886.46 263.33 886.22 262.67 890.53 261.1 886.22 259.53 886.46 258.87 892.58 261.1 886.46 263.33"/>
+  </g>
+  <text class="st3" transform="translate(162.98 268.86)"><tspan x="0" y="0">Present</tspan></text>
+  <text class="st3" transform="translate(334.63 268.86)"><tspan x="0" y="0">Press - btn</tspan></text>
+  <text class="st3" transform="translate(661.56 268.86)"><tspan x="0" y="0">Waiting</tspan></text>
+  <text class="st3" transform="translate(903.83 268.86)"><tspan x="0" y="0">Take Receipt</tspan></text>
+  <text class="st0" transform="translate(1136.05 307.42)"><tspan x="0" y="0">time</tspan></text>
+  <text class="st3" transform="translate(66.66 304.69)"><tspan x="0" y="0">User</tspan></text>
+  <g>
+    <line class="st5" x1="143.34" y1="297.68" x2="144.84" y2="297.68"/>
+    <line class="st8" x1="147.84" y1="297.68" x2="1112.71" y2="297.68"/>
+    <line class="st5" x1="1114.21" y1="297.68" x2="1115.71" y2="297.68"/>
+    <polygon class="st1" points="1109.8 300.86 1109.46 299.92 1115.61 297.68 1109.46 295.44 1109.8 294.5 1118.54 297.68 1109.8 300.86"/>
+  </g>
+  <g>
+    <line class="st7" x1="264.37" y1="385.5" x2="323" y2="385.5"/>
+    <polygon class="st1" points="318.86 387.73 318.62 387.07 322.93 385.5 318.62 383.94 318.86 383.28 324.98 385.5 318.86 387.73"/>
+  </g>
+  <g>
+    <line class="st7" x1="468.77" y1="385.5" x2="527.4" y2="385.5"/>
+    <polygon class="st1" points="523.26 387.73 523.02 387.07 527.33 385.5 523.02 383.94 523.26 383.28 529.37 385.5 523.26 387.73"/>
+  </g>
+  <g>
+    <line class="st7" x1="831.97" y1="385.5" x2="890.6" y2="385.5"/>
+    <polygon class="st1" points="886.46 387.73 886.22 387.07 890.53 385.5 886.22 383.94 886.46 383.28 892.58 385.5 886.46 387.73"/>
+  </g>
+  <g>
+    <line class="st7" x1="679.98" y1="385.5" x2="738.6" y2="385.5"/>
+    <polygon class="st1" points="734.46 387.73 734.22 387.07 738.53 385.5 734.22 383.94 734.46 383.28 740.58 385.5 734.46 387.73"/>
+  </g>
+  <text class="st3" transform="translate(161.54 393.27)"><tspan x="0" y="0">Capture</tspan></text>
+  <text class="st3" transform="translate(343.2 393.27)"><tspan x="0" y="0">Inference</tspan></text>
+  <text class="st3" transform="translate(545.29 393.27)"><tspan x="0" y="0">Oscillation</tspan></text>
+  <text class="st3" transform="translate(752.09 393.27)"><tspan x="0" y="0">Delay</tspan></text>
+  <text class="st3" transform="translate(910.84 393.27)"><tspan x="0" y="0">Output - Ready</tspan></text>
+  <text class="st0" transform="translate(1136.05 431.29)"><tspan x="0" y="0">time</tspan></text>
+  <text class="st3" transform="translate(29.78 429.07)"><tspan x="0" y="0">Algorithm</tspan></text>
+  <g>
+    <line class="st5" x1="143.34" y1="422.08" x2="144.84" y2="422.08"/>
+    <line class="st9" x1="147.84" y1="422.08" x2="1112.71" y2="422.08"/>
+    <line class="st5" x1="1114.21" y1="422.08" x2="1115.71" y2="422.08"/>
+    <polygon class="st1" points="1109.8 425.26 1109.46 424.32 1115.61 422.08 1109.46 419.84 1109.8 418.9 1118.54 422.08 1109.8 425.26"/>
+  </g>
+  <g>
+    <line class="st7" x1="264.37" y1="517.01" x2="323" y2="517.02"/>
+    <polygon class="st1" points="318.86 519.24 318.62 518.58 322.93 517.02 318.62 515.45 318.86 514.79 324.98 517.02 318.86 519.24"/>
+  </g>
+  <g>
+    <line class="st7" x1="468.77" y1="517.01" x2="527.4" y2="517.02"/>
+    <polygon class="st1" points="523.26 519.24 523.02 518.58 527.33 517.02 523.02 515.45 523.26 514.79 529.37 517.02 523.26 519.24"/>
+  </g>
+  <g>
+    <line class="st7" x1="831.97" y1="517.01" x2="890.6" y2="517.02"/>
+    <polygon class="st1" points="886.46 519.24 886.22 518.58 890.53 517.02 886.22 515.45 886.46 514.79 892.58 517.02 886.46 519.24"/>
+  </g>
+  <g>
+    <line class="st7" x1="679.98" y1="517.01" x2="738.6" y2="517.02"/>
+    <polygon class="st1" points="734.46 519.24 734.22 518.58 738.53 517.02 734.22 515.45 734.46 514.79 740.58 517.02 734.46 519.24"/>
+  </g>
+  <text class="st3" transform="translate(179.43 524.78)"><tspan x="0" y="0">Idele</tspan></text>
+  <text class="st4" transform="translate(334.2 524.78)"><tspan class="st2" x="0" y="0">Idle </tspan><tspan class="st10" x="48.67" y="0">(silence)</tspan></text>
+  <text class="st3" transform="translate(562.45 524.78)"><tspan x="0" y="0">Silence</tspan></text>
+  <text class="st3" transform="translate(752.09 524.78)"><tspan x="0" y="0">Motor</tspan></text>
+  <text class="st3" transform="translate(910.13 524.78)"><tspan x="0" y="0">Paper emerges</tspan></text>
+  <text class="st0" transform="translate(1136.05 562.8)"><tspan x="0" y="0">time</tspan></text>
+  <text class="st3" transform="translate(54.49 560.61)"><tspan x="0" y="0">Device</tspan></text>
+  <g>
+    <line class="st5" x1="143.34" y1="553.59" x2="144.84" y2="553.59"/>
+    <line class="st9" x1="147.84" y1="553.59" x2="1112.71" y2="553.59"/>
+    <line class="st5" x1="1114.21" y1="553.59" x2="1115.71" y2="553.59"/>
+    <polygon class="st1" points="1109.8 556.78 1109.46 555.84 1115.61 553.59 1109.46 551.35 1109.8 550.42 1118.54 553.59 1109.8 556.78"/>
+  </g>
+</svg>

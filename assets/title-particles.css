@@ -1,0 +1,5 @@
+/* Two separate effects: cursor dust stays left; a clicked title may fly right. */
+.title-particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none!important;z-index:80;contain:strict}
+html.title-flight-pending [data-project-title]{opacity:0}
+.site-nav .particle-source .nav-title,.site-nav .particle-source .nav-title *{color:transparent!important}
+@media(prefers-reduced-motion:reduce){.title-particle-canvas{display:none}html.title-flight-pending [data-project-title]{opacity:1}.site-nav .particle-source .nav-title,.site-nav .particle-source .nav-title *{color:inherit!important}}
