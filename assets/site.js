@@ -109,6 +109,12 @@
   window.SongDongPage.register('site-content',scope => {
     const main = document.querySelector('main');
     if (!main) return;
+    const mediaUpdates = [];
+    let pocketOpen = !!window.TuoTuoPocket?.debug.open;
+    const mediaCovered = () => main.inert || nav?.classList.contains('menu-open') || pocketOpen;
+    const updateCoverage = () => mediaUpdates.forEach(update => update());
+    scope.listen(document,'songdong:pocketchange',event => {pocketOpen=event.detail.open;updateCoverage();});
+    if (nav) scope.observe(new MutationObserver(updateCoverage)).observe(nav,{attributes:true,attributeFilter:['class','inert']});
     main.querySelectorAll('gallery-grid,gallery-justify,column-set').forEach(el => {
       ['columns','gutter','mobile-columns','mobile-gutter'].forEach(name => { if (el.hasAttribute(name)) el.style.setProperty(`--${name}`,el.getAttribute(name)); });
       const align = el.getAttribute('vertical-align');
@@ -140,7 +146,7 @@
       let paused = reducedMotion.matches, visible = false, touching = false;
       let timer = 0, scheduleVersion = 0, progressAnimation;
       let counter, counterCurrent, counterDigit, counterGhost, counterAnimations = [];
-      let progress, feedback, retry, failedTarget = null, failedDirection = 1, loadingTimer = 0;
+      let progress, feedback, retry, failedTarget = null, failedDirection = 1, loadingTimer = 0, cancelDecode = null;
       let updateToggle = () => {};
       const delay = 2000;
       const settleCounter = () => {
@@ -168,7 +174,7 @@
           if (counterAnimations === currentAnimations) {counterAnimations = [];counterGhost = null;}
         });
       };
-      const canAutoplay = () => scope.active && visible && !paused && !touching && !document.hidden && !document.querySelector('.lightbox[open]');
+      const canAutoplay = () => scope.active && visible && !paused && !touching && !document.hidden && !mediaCovered() && !document.querySelector('.lightbox[open]');
       const stopTimer = () => {
         clearTimeout(timer);timer = 0;scheduleVersion++;
         progressAnimation?.cancel(); progressAnimation = null;
@@ -208,26 +214,38 @@
         settleCounter();
         index = (next+slides.length)%slides.length;
         const target = index, version = ++revision, incoming = slides[target];
+        cancelDecode?.();
         const images = [...incoming.querySelectorAll('img')];
         clearTimeout(loadingTimer);
         gallery.setAttribute('aria-busy','true');
-        if (feedback) { feedback.hidden = true; retry.hidden = true; }
+        if (feedback) {
+          const retryFocused = document.activeElement === retry;
+          feedback.hidden = !retryFocused; retry.hidden = !retryFocused;
+          retry.setAttribute('aria-disabled','true');
+          if (retryFocused) feedback.firstChild.textContent = 'Loading image…';
+        }
         loadingTimer = window.setTimeout(() => {
           if (!scope.active || version !== revision || !feedback) return;
           feedback.firstChild.textContent = 'Loading image…'; feedback.hidden = false;
         },250);
         images.forEach(image => image.loading = 'eager');
         // Decode first so the previous image remains visible while the file loads.
-        let deadline;
-        await Promise.race([
-          Promise.allSettled(images.map(image => image.decode ? image.decode() : Promise.resolve())),
-          new Promise(resolve => { deadline = window.setTimeout(resolve,12000); })
-        ]);
-        clearTimeout(deadline);
+        await new Promise(resolve => {
+          let done = false;
+          const finish = () => {
+            if (done) return; done = true; clearTimeout(deadline);
+            if (cancelDecode === finish) cancelDecode = null;
+            resolve();
+          };
+          const deadline = window.setTimeout(finish,12000);
+          cancelDecode = finish;
+          Promise.allSettled(images.map(image => image.decode ? image.decode() : Promise.resolve())).then(finish);
+        });
         if (!scope.active || version !== revision) return false;
         clearTimeout(loadingTimer); gallery.removeAttribute('aria-busy');
-        if (feedback) feedback.hidden = true;
+        retry?.removeAttribute('aria-disabled');
         if (automaticVersion !== null && (automaticVersion !== scheduleVersion || !canAutoplay())) {
+          if (feedback) feedback.hidden = true;
           index = displayed;return false;
         }
         if (images.some(image => !image.complete || !image.naturalWidth)) {
@@ -237,6 +255,10 @@
             retry.hidden = false; feedback.hidden = false;
           }
           return false;
+        }
+        if (feedback) {
+          if (document.activeElement === retry) gallery.querySelector('.slide-toggle')?.focus({preventScroll:true});
+          feedback.hidden = true; retry.hidden = true;
         }
         failedTarget = null;
         animations.forEach(animation => animation.cancel()); animations = [];
@@ -255,7 +277,7 @@
         return true;
       };
       scope.cleanup(() => {
-        revision++; visible = false; stopTimer(); clearTimeout(loadingTimer); gallery.removeAttribute('aria-busy');
+        revision++; visible = false; stopTimer(); cancelDecode?.(); clearTimeout(loadingTimer); gallery.removeAttribute('aria-busy');
         animations.forEach(animation => animation.cancel()); animations = [];
         settleCounter();
         gallery.querySelectorAll(':scope > .slide-counter,:scope > .slide-progress,:scope > .slide-button,:scope > .slide-toggle,:scope > .slide-feedback').forEach(control => control.remove());
@@ -266,7 +288,7 @@
       retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Retry'; retry.hidden = true;
       feedback.append(message,retry); gallery.append(feedback);
       const retryFailed = () => {
-        if (failedTarget === null) return;
+        if (failedTarget === null || retry.getAttribute('aria-disabled') === 'true') return;
         slides[failedTarget].querySelectorAll('img').forEach(image => {image.src = image.src;});
         show(failedTarget,null,failedDirection).then(applied => {if (applied) schedule();});
       };
@@ -303,6 +325,7 @@
       })).observe(gallery);
       scope.listen(document,'visibilitychange',schedule);
       scope.listen(document,'songdong:lightboxchange',schedule);
+      mediaUpdates.push(schedule);
       scope.listen(window,'pagehide',stopTimer);
       scope.listen(window,'pageshow',schedule);
       let touchStart;
@@ -329,6 +352,7 @@
       const cancelLoad = () => {
         clearTimeout(loadingTimer);loadController?.abort();loadController = null;
         dialog.removeAttribute('aria-busy');
+        retry.removeAttribute('aria-disabled');
       };
       const decodeImage = (src,signal,timeout=8000) => new Promise((resolve,reject) => {
         const asset = new Image();let done = false;
@@ -350,7 +374,11 @@
         active = (index+group.length)%group.length;
         const target = active, original = group[target].querySelector('img'), version = ++revision;
         const preview = original.currentSrc || original.src, full = original.dataset.original || preview;
-        failedTarget = null;feedback.hidden = true;retry.hidden = true;
+        failedTarget = null;
+        const retryFocused = document.activeElement === retry;
+        feedback.hidden = !retryFocused;retry.hidden = !retryFocused;
+        retry.setAttribute('aria-disabled','true');
+        if(retryFocused) message.textContent = 'Loading image…';
         if (opening) {
           image.hidden = !(original.complete && original.naturalWidth);
           if(!image.hidden) image.src = preview;
@@ -377,6 +405,7 @@
         if (!scope.active || version !== revision || signal.aborted || !dialog.open) return;
         clearTimeout(loadingTimer);loadController = null;
         dialog.removeAttribute('aria-busy');
+        retry.removeAttribute('aria-disabled');
         if(source) {
           // Swap a decoded image in one frame; never fade the current image to white.
           imageAnimation?.cancel();image.hidden = false;image.src = source;image.alt = original.alt;
@@ -385,7 +414,10 @@
         if(!source || previewOnly) {
           failedTarget = target;retry.hidden = false;feedback.hidden = false;
           message.textContent = previewOnly ? 'Full-size image unavailable. Preview shown.' : opening ? 'Image could not load. Retry or close the viewer.' : 'Image could not load. The previous image is still shown.';
-        } else feedback.hidden = true;
+        } else {
+          if(document.activeElement === retry) dialog.querySelector('.close').focus({preventScroll:true});
+          feedback.hidden = true;retry.hidden = true;
+        }
       };
       const close = () => {
         if (!scope.active || closing || !dialog.open) return;
@@ -417,12 +449,21 @@
         scope.listen(handle,'click',open); if (handle === el) scope.listen(handle,'keydown',event => { if (event.target===handle && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); open(); } });
       });
       scope.listen(dialog.querySelector('.close'),'click',close);
-      scope.listen(retry,'click',() => {if(failedTarget !== null) view(failedTarget);});
+      scope.listen(retry,'click',() => {if(failedTarget !== null && retry.getAttribute('aria-disabled') !== 'true') view(failedTarget);});
       scope.listen(dialog.querySelector('.previous'),'click',() => view(active-1,false,-1)); scope.listen(dialog.querySelector('.next'),'click',() => view(active+1,false,1));
       scope.listen(dialog,'click',event => { if (event.target === dialog) close(); });
       scope.listen(dialog,'cancel',event => { event.preventDefault(); close(); });
       scope.listen(dialog,'keydown',event => { if (group.length > 1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) { event.preventDefault(); const direction = event.key === 'ArrowLeft' ? -1 : 1; view(active+direction,false,direction); } });
-      scope.listen(dialog,'close',() => { if (!scope.active) return; revision++; cancelLoad(); lockScroll(); returnFocus?.focus({preventScroll:true});document.dispatchEvent(new Event('songdong:lightboxchange')); });
+      scope.listen(dialog,'close',() => {
+        if (!scope.active) return;
+        revision++; cancelLoad(); lockScroll();
+        const usable = element => element?.isConnected && !element.closest('[inert],[hidden]') && element.getClientRects().length;
+        let target = returnFocus;
+        if (!usable(target)) target = returnFocus?.closest('gallery-slideshow')?.querySelector('.slide-toggle');
+        if (!usable(target)) {target=main.querySelector('[data-project-title]');if(target)target.tabIndex=-1;}
+        if (usable(target)) target.focus({preventScroll:true});
+        document.dispatchEvent(new Event('songdong:lightboxchange'));
+      });
       scope.cleanup(() => {
         revision++; closing = true; returnFocus = null;cancelLoad();
         imageAnimation?.cancel(); dialogAnimation?.cancel();

@@ -11,7 +11,10 @@
     return pathname.replace(/\/index\.html$/,'/').replace(/\/$/,'');
   };
   const event=(name,url,extra={})=>document.dispatchEvent(new CustomEvent(name,{detail:{url,...extra}}));
-  const cache=new Map();
+  const cache=new Map(), warming=new Map();
+  const cacheLimit=6, warmLimit=2;
+  let intentTimer=0,intentLink=null;
+  const documentKey=url=>`${url.origin}${path(url.href)}${url.search}`;
   let revision=0, controller=null, displayedURL=location.href, scrollFrame=0, committing=false, pendingNavigation=null;
   function cancelNavigation(reason) {
     if(!pendingNavigation) return;
@@ -99,15 +102,62 @@
     // scroll events so they cannot overwrite the saved destination position.
     if(pop) requestAnimationFrame(restore);else restore();
   }
-  async function load(url,signal) {
-    if(cache.has(url.href)) return cache.get(url.href);
-    const response=await fetch(url.href,{signal,credentials:'same-origin',headers:{Accept:'text/html'}});
+  async function fetchDocument(url,signal) {
+    const requestURL=new URL(url.href);requestURL.hash='';
+    const response=await fetch(requestURL.href,{signal,credentials:'same-origin',headers:{Accept:'text/html'}});
     if(!response.ok || !response.headers.get('content-type')?.includes('text/html') || !projectURL(new URL(response.url)) || path(response.url)!==path(url.href)) throw new Error('Project response unavailable');
     const html=await response.text();
     if(signal.aborted) throw new DOMException('Aborted','AbortError');
-    cache.set(url.href,html);
-    if(cache.size>6) cache.delete(cache.keys().next().value);
-    return html;
+    const record={html,base:response.url},key=documentKey(url);
+    cache.delete(key);cache.set(key,record);
+    if(cache.size>cacheLimit) cache.delete(cache.keys().next().value);
+    return record;
+  }
+  function waitForDocument(promise,signal) {
+    // A click shares an already-requested document. Cancelling that click must
+    // stop its UI immediately without creating a second copy of the request.
+    return new Promise((resolve,reject)=>{
+      const abort=()=>reject(new DOMException('Aborted','AbortError'));
+      if(signal.aborted) {abort();return;}
+      signal.addEventListener('abort',abort,{once:true});
+      promise.then(resolve,reject).finally(()=>signal.removeEventListener('abort',abort));
+    });
+  }
+  async function load(url,signal) {
+    const key=documentKey(url);
+    if(cache.has(key)) {
+      const record=cache.get(key);cache.delete(key);cache.set(key,record);return record;
+    }
+    if(warming.has(key)) {
+      try {return await waitForDocument(warming.get(key).promise,signal);}
+      catch(error) {if(signal.aborted) throw error;}
+      // Speculation may have timed out or failed before the actual click.
+      // The explicit navigation still gets its own ordinary fetch attempt.
+    }
+    return fetchDocument(url,signal);
+  }
+  const connection=navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const canWarm=()=>!document.hidden && !connection?.saveData &&
+    !/^(slow-2g|2g|3g)$/.test(connection?.effectiveType || '') &&
+    !(connection?.downlink>0 && connection.downlink<1.5) && !(connection?.rtt>500);
+  const projectLink=target=>target?.closest?.('.site-nav a.project-link,.project-neighbors a[href]');
+  function clearIntent() {clearTimeout(intentTimer);intentTimer=0;intentLink=null;}
+  function warm(link) {
+    if(!canWarm()) return;
+    const url=new URL(link.href,location.href),key=documentKey(url);
+    if(!projectURL(url) || sameDocument(url) || cache.has(key) || warming.has(key) || warming.size>=warmLimit) return;
+    const abort=new AbortController(),deadline=setTimeout(()=>abort.abort(),5000);
+    const promise=fetchDocument(url,abort.signal).finally(()=>{clearTimeout(deadline);warming.delete(key);});
+    warming.set(key,{promise,abort});promise.catch(()=>{});
+  }
+  function queueIntent(event) {
+    if(event.type==='pointerover' && event.pointerType==='touch') return;
+    const link=projectLink(event.target);
+    if(!link || link===intentLink || !canWarm()) return;
+    clearIntent();intentLink=link;
+    // Passing across the index should not fetch every project. Warm only a
+    // deliberate hover/focus, two requests at most, and retain six documents.
+    intentTimer=setTimeout(()=>{clearIntent();warm(link);},100);
   }
   async function navigate(url,{link=null,keyboard=false,pop=false,restoreY=null}={}) {
     const version=++revision;
@@ -121,12 +171,12 @@
     nav.setAttribute('aria-busy','true');
     const timeout=setTimeout(()=>controller?.signal===signal && controller.abort(),7000);
     try {
-      const html=await load(url,signal);
+      const {html,base}=await load(url,signal);
       if(version!==revision || signal.aborted) return;
       const parsed=new DOMParser().parseFromString(html,'text/html');
       const next=parsed.querySelector('main'), pageStyle=parsed.querySelector('head > style[data-page-style]');
       if(!next?.querySelector('[data-project-title]') || !pageStyle || !parsed.querySelector('.site-nav')) throw new Error('Invalid project document');
-      resolveContent(next,url.href);
+      resolveContent(next,base);
       const main=document.importNode(next,true);
       main.querySelectorAll('script').forEach(script=>script.remove());
       const style=document.querySelector('head > style[data-page-style]');
@@ -175,19 +225,24 @@
       if(version===revision) {controller=null;committing=false;nav.removeAttribute('aria-busy');}
     }
   }
-  nav.addEventListener('click',e=>{
-    const link=e.target.closest('a.project-link');
-    if(!link || e.defaultPrevented || e.button!==0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || link.hasAttribute('download') || (link.target && link.target!=='_self')) return;
-    const url=new URL(link.href);
-    if(!projectURL(url)) return;
-    e.preventDefault();navigate(url,{link,keyboard:e.detail===0});
+  document.addEventListener('pointerover',queueIntent,{passive:true});
+  document.addEventListener('focusin',queueIntent);
+  for(const type of ['pointerout','focusout']) document.addEventListener(type,event=>{
+    if(intentLink && intentLink.contains(event.target) && !intentLink.contains(event.relatedTarget)) clearIntent();
   });
+  addEventListener('pagehide',()=>{clearIntent();for(const request of warming.values())request.abort.abort();});
   document.addEventListener('click',e=>{
     const link=e.target.closest('a[href]');
     if(!link || e.defaultPrevented || e.button!==0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || link.hasAttribute('download') || (link.target && link.target!=='_self')) return;
     const url=new URL(link.href,location.href);
-    if(!url.hash || !sameDocument(url)) return;
-    e.preventDefault();navigateWithinPage(url,{keyboard:e.detail===0});
+    if(sameDocument(url) && url.hash) {
+      e.preventDefault();clearIntent();navigateWithinPage(url,{keyboard:e.detail===0});
+    } else if(projectLink(link) && projectURL(url)) {
+      e.preventDefault();clearIntent();
+      // Footer links keep this document and its index just like project links.
+      // Only an actual index click owns the existing left-to-title particles.
+      navigate(url,{link:nav.contains(link)?link:null,keyboard:e.detail===0});
+    }
   });
   addEventListener('popstate',e=>{
     const url=new URL(location.href);

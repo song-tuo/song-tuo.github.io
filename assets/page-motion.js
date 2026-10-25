@@ -1,20 +1,18 @@
-/* Motion (MIT, locally bundled): a quiet entrance without delaying navigation. */
+/* Native, bounded motion: a quiet entrance without delaying navigation. */
 window.SongDongPage.register('page-motion', scope => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const content = document.querySelector('main .page-content');
-  if (!content || reduced.matches || !window.Motion?.animate) return;
+  if (!content || reduced.matches || !content.animate) return;
   // Let back/forward navigation restore the page exactly where it was.
   if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') return;
   const home = content.closest('.home-page');
   let entrance;
-  // A title flight owns this whole navigation, even if a late Motion script
-  // arrives after its short-lived pending state has already cleared.
+  // A title flight owns this whole navigation after its pending state clears.
   if (home && !document.documentElement.classList.contains('title-flight-navigation')) {
     // Keep a direct-loaded article readable from its first frame. The title
     // flight carries navigation motion; body text should not slide into place.
-    entrance = Motion.animate(content, {
-      opacity: [.85, 1]
-    }, {duration: .16, ease: [.22, 1, .36, 1]});
+    entrance = content.animate([{opacity:.85},{opacity:1}],
+      {duration:160,easing:'cubic-bezier(.22,1,.36,1)'});
   }
   const animations = new Set();
   let observer;
@@ -40,7 +38,7 @@ window.SongDongPage.register('page-motion', scope => {
     });
   }
   const settle = () => {
-    entrance?.complete(); observer?.disconnect();
+    entrance?.finish(); observer?.disconnect();
     animations.forEach(animation => animation.finish()); animations.clear();
   };
   scope.listen(reduced,'change', event => {if (event.matches) settle();});

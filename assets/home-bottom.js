@@ -10,6 +10,7 @@
   const loopStart = 68.15;
   let field = null;
   function initialize(element) {
+    field?.dispose();
     field = window.SongDongTextField?.create(element, width, height);
   }
   const lines = [
@@ -559,6 +560,7 @@
   }
   window.SongDongBottom = {draw, prepare, initialize, duration, width, height, lines,
     reset() {clearDust(); field?.reset();},
+    dispose() {clearDust();field?.dispose();field=null;},
     get debug() {return {glyphCount: glyphs.length, visibleGlyphs: sculptureItems.length,
       letterSpacing, densityFactor: 43 / letterSpacing, dustLimit: maxDust,
       fontRange:{...fontRange}, endpointTails:{active:tailState.active,letters:tailState.letters,

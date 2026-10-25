@@ -142,40 +142,89 @@ window.SongDongPage.register('atelier-next', scope => {
   });
 
   const loops = [];
+  const index = document.querySelector('.site-nav'), main = document.querySelector('main');
+  let pocketOpen = !!window.TuoTuoPocket?.debug.open, navigationPending = false;
+  let selected = null, manualChoice = null, resumeTimer = 0;
+  function updateLoops() {
+    clearTimeout(resumeTimer);resumeTimer = 0;
+    if (!scope.active) return;
+    const flight = !!window.SongDongTitleParticles?.debug.active;
+    const covered = document.hidden || main?.inert || index?.classList.contains('menu-open') || pocketOpen || document.querySelector('.lightbox[open]');
+    const candidates = loops.filter(state => !state.paused && state.visible && !state.element.closest('[aria-hidden="true"]') && (state === manualChoice || state.ratio >= .2));
+    if (covered || navigationPending || flight) selected = null;
+    else if (candidates.includes(manualChoice)) selected = manualChoice;
+    else {
+      // Select before assigning a source: a screenful of motion posters should
+      // never start several video downloads/decoders during a title flight.
+      selected = candidates.map(state => {
+        const box = state.element.getBoundingClientRect();
+        return {state,distance:Math.abs(box.top + box.height * .5 - innerHeight * .5)};
+      }).sort((a,b) => b.state.ratio-a.state.ratio || a.distance-b.distance)[0]?.state || null;
+    }
+    loops.forEach(state => {if(state !== selected)state.update();});
+    selected?.update();
+    if (flight && !document.hidden) resumeTimer = window.setTimeout(updateLoops,120);
+  }
+  scope.listen(document,'navigationstart',() => {navigationPending=true;updateLoops();});
+  for (const type of ['navigationend','navigationcancel','navigationerror']) scope.listen(document,type,() => {navigationPending=false;updateLoops();});
+  scope.listen(document,'songdong:pocketchange',event => {pocketOpen=event.detail.open;updateLoops();});
+  scope.listen(document,'songdong:lightboxchange',updateLoops);
+  scope.listen(document,'visibilitychange',updateLoops);
+  scope.listen(window,'pageshow',updateLoops);
+  if (index) scope.observe(new MutationObserver(updateLoops)).observe(index,{attributes:true,attributeFilter:['class','inert']});
   const observer = scope.observe(new IntersectionObserver(entries => {
     if (!scope.active) return;
     for (const entry of entries) {
       const state = loops.find(item => item.element === entry.target);
-      if (state) {state.visible=entry.isIntersecting;state.update();}
+      if (state) {state.visible=entry.isIntersecting;state.ratio=entry.intersectionRatio;}
     }
-  },{rootMargin:'80px',threshold:0}));
+    updateLoops();
+  },{rootMargin:'0px',threshold:[0,.2,.5,.75,1]}));
   document.querySelectorAll('[data-loop]').forEach(element => {
     const video = element.querySelector('video');
     const button = element.querySelector('.loop-toggle');
-    const state = {element,visible:false,paused:reduced.matches,update};
+    const state = {element,visible:false,ratio:0,paused:reduced.matches,update};
     video.muted=true;
-    let revision=0;
+    let revision=0, failed=false, playPending=false;
+    const label=()=>{
+      const playing=selected === state && !state.paused;
+      button.textContent=failed?'Retry motion':playing?'Pause motion':'Play motion';
+      button.setAttribute('aria-label',failed?'Retry animation':playing?'Pause animation':'Play animation');
+    };
+    const fail=()=>{
+      revision++;playPending=false;failed=true;state.paused=true;video.pause();
+      if (manualChoice === state) manualChoice=null;
+      element.classList.remove('is-playing');label();updateLoops();
+    };
     function update() {
       if (!scope.active) return;
-      const token=++revision;
-      const play=state.visible && !state.paused && !document.hidden && !element.closest('[aria-hidden="true"]') && !document.querySelector('.lightbox[open]');
-      if (play) {
-        if (!video.src) video.src=video.dataset.loopSrc;
-        video.play().then(()=>{if(scope.active && token===revision)element.classList.add('is-playing');}).catch(()=>{
-          if(scope.active && token===revision){state.paused=true;button.textContent='Play motion';button.setAttribute('aria-label','Play animation');}
-        });
-      } else video.pause();
+      label();
+      if (selected === state) {
+        if (playPending || (!video.paused && !video.error)) return;
+        const token=++revision;playPending=true;
+        if (failed || video.error) {
+          failed=false;video.src=video.dataset.loopSrc;video.load();label();
+        } else if (!video.src) video.src=video.dataset.loopSrc;
+        video.play().then(()=>{
+          if(scope.active && token===revision)element.classList.add('is-playing');
+        }).catch(()=>{if(scope.active && token===revision)fail();}).finally(()=>{if(token===revision)playPending=false;});
+      } else {revision++;playPending=false;video.pause();}
     }
     button.hidden=false;
-    const label=()=>{button.textContent=state.paused?'Play motion':'Pause motion';button.setAttribute('aria-label',state.paused?'Play animation':'Pause animation');};
-    scope.listen(button,'click',event=>{event.stopPropagation();state.paused=!state.paused;label();update();});
-    scope.listen(reduced,'change',()=>{state.paused=reduced.matches;if(reduced.matches)element.classList.remove('is-playing');label();update();});
-    scope.listen(document,'visibilitychange',update);
-    scope.listen(document,'songdong:lightboxchange',update);
-    scope.listen(window,'pagehide',()=>video.pause());
-    scope.listen(window,'pageshow',update);
-    scope.observe(new MutationObserver(update)).observe(element,{attributes:true,attributeFilter:['aria-hidden','hidden']});
-    scope.cleanup(() => {revision++;video.pause();});
+    scope.listen(button,'click',event=>{
+      event.stopPropagation();
+      // A paused-by-coverage poster can be explicitly chosen without first
+      // toggling an invisible autoplay preference off and back on.
+      state.paused = selected === state && !failed;
+      manualChoice = state.paused ? null : state;
+      label();updateLoops();
+    });
+    scope.listen(video,'error',fail);
+    scope.listen(reduced,'change',()=>{state.paused=reduced.matches;if(reduced.matches)element.classList.remove('is-playing');label();updateLoops();});
+    scope.observe(new MutationObserver(updateLoops)).observe(element,{attributes:true,attributeFilter:['aria-hidden','hidden']});
+    scope.cleanup(() => {revision++;playPending=false;video.pause();});
     label();loops.push(state);observer.observe(element);
   });
+  scope.listen(window,'pagehide',() => {clearTimeout(resumeTimer);resumeTimer=0;selected=null;loops.forEach(state=>state.update());});
+  scope.cleanup(() => clearTimeout(resumeTimer));
 });

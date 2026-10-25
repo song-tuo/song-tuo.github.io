@@ -30,6 +30,13 @@ main .copy + :is(media-item,gallery-slideshow,gallery-grid,gallery-justify) { ma
 main .copy ul { margin-top:.3em; margin-bottom:.3em; }
 main .copy li + li { margin-top:.16em; }
 main .copy a { text-decoration-thickness:1px; text-underline-offset:.18em; }
+/* Figure notes and image credits stay legible at every viewport height. */
+main .project-page :is(.project-caption,.project-credit),
+main .project-page :is(.project-caption,.project-credit) :where(*) {
+  font-size:max(12px,calc(var(--font-size,1.4rem) * var(--font-scale,1)))!important;
+  line-height:1.4!important;
+}
+main .project-page .project-credit { color:#626262!important; }
 /* Small, steady navigation feedback; the images keep the visual emphasis. */
 .slide-counter { position:absolute; left:14px; bottom:13px; z-index:2; padding:5px 7px; border-radius:3px; color:#fff; background:rgba(24,24,24,.58); font:11px/1 Arial,Helvetica,sans-serif; font-variant-numeric:tabular-nums; letter-spacing:.06em; pointer-events:none; }
 .slide-progress { position:absolute; inset:auto 0 0; height:2px; z-index:2; pointer-events:none; background:rgba(127,127,127,.12); }

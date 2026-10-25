@@ -150,11 +150,20 @@
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       return {backend:'software'};
     }
-    let program, uniforms, layers, lost = false;
+    let program, uniforms, layers, lost = false, disposed = false;
+    let buffers=[],arrays=[],textures=[];
+    function release() {
+      buffers.forEach(buffer=>gl.deleteBuffer(buffer));buffers=[];
+      arrays.forEach(array=>gl.deleteVertexArray(array));arrays=[];
+      textures.forEach(texture=>gl.deleteTexture(texture));textures=[];
+      if(program) gl.deleteProgram(program);program=null;
+    }
     function initialize() {
       function compile(kind, source) {
         const shader = gl.createShader(kind);gl.shaderSource(shader,source);gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+        if (!gl.getShaderParameter(shader,gl.COMPILE_STATUS)) {
+          const message=gl.getShaderInfoLog(shader);gl.deleteShader(shader);throw new Error(message);
+        }
         return shader;
       }
       program = gl.createProgram();
@@ -163,26 +172,33 @@
       if (!gl.getProgramParameter(program,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
       gl.deleteShader(vs);gl.deleteShader(fs);
       uniforms = Object.fromEntries(['viewport','clock','orbitClock','layer','opacity','motion','cursor','gesture','pulse','atlas'].map(n => [n,gl.getUniformLocation(program,n)]));
-      const quad = gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);
+      const quad = gl.createBuffer();buffers.push(quad);gl.bindBuffer(gl.ARRAY_BUFFER,quad);
       gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-.5,-.5,.5,-.5,-.5,.5,-.5,.5,.5,-.5,.5,.5]),gl.STATIC_DRAW);
       layers = Object.values(data).map(vertices => {
-        const vao=gl.createVertexArray();gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,quad);
+        const vao=gl.createVertexArray();arrays.push(vao);gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,quad);
         gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-        const buffer = gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
+        const buffer = gl.createBuffer();buffers.push(buffer);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
         for (let i=1;i<=2;i++) {gl.enableVertexAttribArray(i);gl.vertexAttribPointer(i,4,gl.FLOAT,false,32,(i-1)*16);gl.vertexAttribDivisor(i,1);}
         return {vao,count:vertices.length/8};
       });
-      const texture = gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);
+      const texture = gl.createTexture();textures.push(texture);gl.bindTexture(gl.TEXTURE_2D,texture);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
       gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,atlas);
       gl.enable(gl.BLEND);gl.blendFuncSeparate(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA,gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
     }
-    initialize();
-    canvas.addEventListener('webglcontextlost',e => {e.preventDefault();lost=true;});
-    canvas.addEventListener('webglcontextrestored',() => {initialize();lost=false;});
+    try {initialize();} catch(error) {release();throw error;}
+    const contextLost=e=>{e.preventDefault();lost=true;};
+    const contextRestored=()=>{
+      if(disposed) return;
+      // Objects from the lost context are already invalidated by the browser.
+      buffers=[];arrays=[];textures=[];program=null;
+      initialize();lost=false;
+    };
+    canvas.addEventListener('webglcontextlost',contextLost);
+    canvas.addEventListener('webglcontextrestored',contextRestored);
     return {backend:'webgl2', draw(state) {
-      if (lost) return;
+      if (lost || disposed) return;
       gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
       gl.useProgram(program);gl.uniform2f(uniforms.viewport,width,height);
       gl.uniform1f(uniforms.clock,state.time);gl.uniform1f(uniforms.orbitClock,state.orbitTime);
@@ -197,6 +213,11 @@
         gl.uniform1f(uniforms.layer,i);gl.uniform1f(uniforms.opacity,opacity);
         gl.bindVertexArray(layers[i].vao);gl.drawArraysInstanced(gl.TRIANGLES,0,6,layers[i].count);
       }
+    },dispose() {
+      if(disposed) return;disposed=true;
+      canvas.removeEventListener('webglcontextlost',contextLost);
+      canvas.removeEventListener('webglcontextrestored',contextRestored);
+      release();gl.getExtension('WEBGL_lose_context')?.loseContext();
     }};
   }
 
@@ -269,9 +290,10 @@
     if (!renderer) renderer=fallbackRenderer(canvas,atlas,data,width,height);
     const state={time:0,orbitTime:0,mix:0,x:0,y:0,radius:115,hover:0,vx:1,vy:0,
       charge:0,pulse:{x:width/2,y:height/2,start:-100},reduced:false};
-    let last=null,pressed=false,lastX=0,lastY=0;
+    let last=null,pressed=false,lastX=0,lastY=0,disposed=false;
     function reset() {last=null;pressed=false;state.hover=state.charge=0;state.pulse.start=-100;}
     return {draw(seconds,options) {
+      if(disposed) return;
       const reduced=!!options.reducedMotion,time=reduced ? 21 : seconds;
       let delta=last===null ? 0 : time-last;
       const seek=last===null||delta<0||delta>.25;
@@ -295,7 +317,10 @@
       const pixelWidth=Math.min(options.pixelWidth,1608),pixelHeight=Math.round(pixelWidth*height/width);
       if(canvas.width!==pixelWidth||canvas.height!==pixelHeight) {canvas.width=pixelWidth;canvas.height=pixelHeight;resized=true;}
       renderer.draw(state,resized||seek);
-    },reset,get debug() {return {backend:renderer.backend,mode:state.mix<.01?'orbits':state.mix>.99?'characters':'transition',
+    },reset,dispose() {
+      if(disposed) return;disposed=true;reset();renderer.dispose?.();
+      canvas.width=canvas.height=0;canvas.remove();
+    },get debug() {return {backend:renderer.backend,disposed,mode:state.mix<.01?'orbits':state.mix>.99?'characters':'transition',
       orbitGlyphs:data.orbit.length/8,fieldGlyphs:data.grid.length/8,hover:state.hover,charge:state.charge,
       pulseAge:state.pulse.start<0?null:state.time-state.pulse.start,mix:state.mix,reducedMotion:state.reduced};}};
   }

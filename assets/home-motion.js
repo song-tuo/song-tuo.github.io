@@ -16,6 +16,8 @@ window.SongDongPage.register('home-motion', async scope => {
   let elapsed = 0, last = performance.now(), request = 0, paused = false;
   let onScreen = true, pageActive = true;
   let pocketOpen = document.body.classList.contains('tuotuo-pocket-open');
+  const index=document.querySelector('.site-nav');
+  let indexOpen=!!index?.classList.contains('menu-open');
   const button = document.querySelector('[data-home-motion-toggle]');
   const pointer = {x: 0, y: 0, active: false};
   const target = {x: 0, y: 0};
@@ -113,7 +115,7 @@ window.SongDongPage.register('home-motion', async scope => {
       element.classList.add('motion-ready');
     }
   }
-  function running() { return scope.active && pageActive && !paused && !pocketOpen && !preference.matches && !document.hidden && onScreen; }
+  function running() { return scope.active && pageActive && !paused && !pocketOpen && !indexOpen && !preference.matches && !document.hidden && onScreen; }
   function frame(now) {
     request = 0;
     if (!running()) {
@@ -140,6 +142,10 @@ window.SongDongPage.register('home-motion', async scope => {
   }
   if (button) scope.listen(button,'click', () => {paused = !paused; schedule();});
   scope.listen(document,'songdong:pocketchange',event => {pocketOpen=event.detail.open;clearPointer();schedule();});
+  if(index) scope.observe(new MutationObserver(()=>{
+    const open=index.classList.contains('menu-open');
+    if(open!==indexOpen) {indexOpen=open;clearPointer();schedule();}
+  })).observe(index,{attributes:true,attributeFilter:['class']});
   scope.listen(preference,'change', () => {clearPointer(); draw(true); schedule();});
   scope.listen(document,'visibilitychange', () => {
     if (document.hidden) clearPointer();
@@ -196,6 +202,7 @@ window.SongDongPage.register('home-motion', async scope => {
     cancelAnimationFrame(request);request = 0;
     cancelIdle(preparationRequest);preparationRequest = 0;
     clearPointer();
+    panels.forEach(panel=>panel.renderer.dispose?.());
     if (window.SongDongMotion === motion) delete window.SongDongMotion;
   });
 });
