@@ -1,7 +1,9 @@
 /* Atelier Next — a reading room for work in motion. */
 :root{--next-ink:#202527;--next-muted:#626b70;--next-rule:#dce0e2;--next-ease:cubic-bezier(.22,1,.36,1)}
-html,body,body *{-webkit-user-select:none;user-select:none}
-input,textarea,[contenteditable=""],[contenteditable="true"],[contenteditable="plaintext-only"],[contenteditable=""] *,[contenteditable="true"] *,[contenteditable="plaintext-only"] *{-webkit-user-select:text;user-select:text}
+/* Static portfolio copy stays nonselectable, including generated UI labels. */
+html,body,body *,body *::before,body *::after{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none}
+/* Visitors can still compose a message and copy the explicit email fallback. */
+input,textarea,[contenteditable=""],[contenteditable="true"],[contenteditable="plaintext-only"],[contenteditable=""] *,[contenteditable="true"] *,[contenteditable="plaintext-only"] *{-webkit-user-select:text!important;user-select:text!important;-webkit-touch-callout:default}
 img,picture{-webkit-user-drag:none;-webkit-touch-callout:none}
 ::selection{background:#dce6ef;color:#18212a}
 .reading-project [data-section]{scroll-margin-top:90px}

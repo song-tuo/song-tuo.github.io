@@ -6,16 +6,24 @@
     const element = eventElement(target);
     return !!element && (element.matches('input,textarea') || element.isContentEditable);
   };
-  // Keep editing controls usable while suppressing ordinary page text copying.
-  for (const type of ['selectstart','copy','cut']) {
+  // These delegated guards also cover new project content and lightbox labels.
+  // Leave form editing and the explicit Contact email-copy button usable.
+  for (const type of ['selectstart','copy','cut','paste']) {
     document.addEventListener(type,event => {
       if (!editableTarget(event.target)) event.preventDefault();
     },true);
   }
-  // Delegation also covers images created later by the lightbox.
+  document.addEventListener('keydown',event => {
+    if (editableTarget(event.target) || event.altKey || event.shiftKey) return;
+    if ((event.ctrlKey || event.metaKey) && ['a','c','x','v'].includes(event.key.toLowerCase())) {
+      event.preventDefault();
+    }
+  },true);
+  // Suppress the text/image callout and drag paths without intercepting taps,
+  // scrolling, pinch zoom, Tab navigation, or controls inside an editor.
   for (const type of ['contextmenu','dragstart']) {
     document.addEventListener(type,event => {
-      if (eventElement(event.target)?.closest('img,picture')) event.preventDefault();
+      if (!editableTarget(event.target)) event.preventDefault();
     },true);
   }
   const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
