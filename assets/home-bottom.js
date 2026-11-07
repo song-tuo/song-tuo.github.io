@@ -14,18 +14,18 @@
     field = window.SongDongTextField?.create(element, width, height);
   }
   const lines = [
-    'Song Dong is an Interdisciplinary',
-    'Designer working at the intersection of',
-    'AI’s perceptual infrastructures,',
-    'computational design, and',
-    'human–computer interaction. As an',
-    'architect, media artist, and HCI',
-    'researcher, they build embodied',
-    'systems that surface the hidden',
-    'temporal and material logics of machine',
-    'reasoning—reframing how humans',
-    'understand, negotiate, and intervene in',
-    'algorithmic processes.'
+    "Song Dong is a design researcher",
+    "with a background in architecture,",
+    "focused on tangible and embodied",
+    "interaction. Combining physical computing,",
+    "material experimentation, and iterative",
+    "prototyping, they explore how computation",
+    "takes physical form and how physical",
+    "interaction shapes perception and creative",
+    "expression. Their empirical research",
+    "examines how interfaces and evidence",
+    "influence the ways people interpret",
+    "and judge computational systems."
   ];
   const text = lines.join(' ');
   const clamp = (n, a = 0, b = 1) => Math.max(a, Math.min(b, n));
@@ -38,7 +38,7 @@
   // Sample by distance instead of angle: letters stay apart at the waist.
   // A single unbroken ribbon also avoids the rigid, stacked-ring appearance.
   const turns = 8.35, steps = 5000, letterSpacing = 43 / 3;
-  let previous = null, travelled = 0, letter = text.indexOf('embodied');
+  let previous = null, travelled = 0, letter = Math.max(0, text.indexOf('tangible'));
   for (let step = 0; step <= steps; step++) {
     const v = step / steps, y = (v - .5) * 410;
     const radius = 17 + 218 * Math.pow(Math.abs(v * 2 - 1), .92);

@@ -12,7 +12,11 @@
   const WIDTH = 1072;
   const HEIGHT = 164;
   const DURATION = 8.83;
-  const TEXT = 'LISTENING TO THE RHYTHMS OF MACHINES THINKING';
+  const TEXT = 'Making with computation, thinking through materials.';
+  // Fit every animation phase to the current phrase, including its punctuation.
+  const phraseSpacing = Math.min(23.05, 1008 / Math.max(1, TEXT.length - 1));
+  const dotSpacing = Math.min(14.42, 624 / Math.max(1, TEXT.length - 1));
+  const phraseScale = .68 * phraseSpacing / 23.05;
   const FONT = '"Bodoni Moda", Georgia, serif';
   const glyphs = new Map();
   let dots;
@@ -58,11 +62,11 @@
     canvas.height = HEIGHT;
     const pen = canvas.getContext('2d', { willReadFrequently: true });
     for (let i = 0; i < TEXT.length; i += 1) {
-      drawLetter(pen, TEXT[i], 220 + i * 14.42, 50, false, 0.55);
+      drawLetter(pen, TEXT[i], 536.1 + (i - (TEXT.length - 1) / 2) * dotSpacing, 50, false, .55 * dotSpacing / 14.42);
     }
     const pixels = pen.getImageData(0, 0, WIDTH, HEIGHT).data;
     const points = [];
-    for (let y = 66; y < 96; y += 2) {
+    for (let y = 66; y < 106; y += 2) {
       for (let x = 211; x < 866; x += 2) {
         const alpha = pixels[(y * WIDTH + x) * 4 + 3];
         if (alpha > 30) {
@@ -100,7 +104,7 @@
       const shimmer = .5 + .5 * Math.sin(time * 13 + phase);
       ctx.globalAlpha = opacity * smooth((density - letterDensity + .24) / .32) * (progress + (1 - progress) * shimmer);
       const jitter = Math.sin(time * 5 + phase) * 5 * (1 - progress);
-      drawLetter(ctx, TEXT[i], 29 + i * 23.05 + pointer.x * 3, 50 + jitter + pointer.y * 2, true, 0.68);
+      drawLetter(ctx, TEXT[i], 536.1 + (i - (TEXT.length - 1) / 2) * phraseSpacing + pointer.x * 3, 50 + jitter + pointer.y * 2, true, phraseScale);
     }
     // Fine dark scan lines give the flickering letters their original texture.
     ctx.fillStyle = '#000';
@@ -114,7 +118,7 @@
     const left = center - (TEXT.length - 1) * spacing / 2;
     for (let i = 0; i < TEXT.length; i += 1) {
       const drift = time ? Math.sin(time * 1.7 + i * .22) * .65 : 0;
-      drawLetter(ctx, TEXT[i], left + i * spacing + pointer.x * 3, 50 + drift + pointer.y * 2, false, 0.68);
+      drawLetter(ctx, TEXT[i], left + i * spacing + pointer.x * 3, 50 + drift + pointer.y * 2, false, phraseScale);
     }
   }
 
@@ -129,7 +133,7 @@
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
     ctx.fillStyle = '#fff';
     if (reducedMotion) {
-      drawPhrase(ctx, 23.05, 536.1);
+      drawPhrase(ctx, phraseSpacing, 536.1);
     } else if (time > 0.07 && time < 2.7) {
       const blend = smooth((time - 2.15) / .55);
       drawDots(ctx, time, 1 - blend);
@@ -137,13 +141,13 @@
     } else if (time >= 2.7 && time < 5.32) {
       const blend = smooth((time - 4.95) / .37);
       drawFlicker(ctx, time, 1 - blend);
-      ctx.globalAlpha = blend; drawPhrase(ctx, 23.05, 536.1, time); ctx.globalAlpha = 1;
+      ctx.globalAlpha = blend; drawPhrase(ctx, phraseSpacing, 536.1, time); ctx.globalAlpha = 1;
     } else if (time >= 5.32 && time < 7.03) {
-      drawPhrase(ctx, 23.05, 536.1, time);
+      drawPhrase(ctx, phraseSpacing, 536.1, time);
     } else if (time >= 7.03 && time < 8.5) {
       const progress = clamp((time - 7.03) / 1.39, 0, 1);
       ctx.globalAlpha = 1 - smooth((progress - .85) / .15);
-      drawPhrase(ctx, 23.05 * (1 - smooth(progress)), 536.1 + 12 * progress, time);
+      drawPhrase(ctx, phraseSpacing * (1 - smooth(progress)), 536.1 + 12 * progress, time);
     }
     ctx.restore();
   }
