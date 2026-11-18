@@ -89,3 +89,8 @@ media-item[data-loop].is-playing video{opacity:1}
   .film-stage>.film-poster,.project-reader,.reader-contents summary span,.reader-contents a,.reader-contents a::before{transition:none;transform:none}
   .reader-contents[open] ol,.film-feedback,.film-feedback::before{animation:none!important}
 }
+
+/* Publication metadata shares the same quiet hierarchy on every project. */
+.project-page .project-subtitle{margin:8px 0 18px;font:400 17px/1.45 var(--portfolio-font);color:var(--next-ink)}
+.project-page .project-publication{margin:12px 0 22px;font:400 14px/1.55 var(--portfolio-font);color:#4f585e;overflow-wrap:break-word}
+.project-publication a{font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px}
