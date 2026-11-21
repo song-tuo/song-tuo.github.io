@@ -40,7 +40,7 @@
 </div>
 <span class="copy"><sup><i><u><span style="--font-scale: 1.2;" id="introduction-1" data-section role="heading" aria-level="2">Introduction</span></u></i></sup>
 <br />
-<i>Theory as Apparatus </i>is an interactive sound installation that transforms Wassily Kandinsky’s theory of artistic formation into a playable physical system.<br />
+<i>Theory as Apparatus </i>is an interactive sound installation that draws on Wassily Kandinsky’s distinctions between Impression, Improvisation, and Composition to create a playable physical system.<br />
 A Kandinsky painting is cropped into a circular disc and placed on a rotating turntable. As the disc moves beneath an RGBC color sensor, its colors are continuously translated into sound. Rather than treating color and sound as a fixed one-to-one correspondence, the system organizes this translation through three interconnected stages—<i>Impression, Improvisation, and Composition</i>.<br />
 Through knobs, sliders, rotation, sensing, and listening, the user does not simply hear a painting. They physically operate the theory through which the painting becomes sound.<br />
 The original system converts the rotating painting into a continuous RGBC time series, processed through Node.js and OSC before entering a Pure Data synthesis system.<br />
@@ -48,8 +48,7 @@ The original system converts the rotating painting into a continuous RGBC time s
 </span><media-item class="project-before-film" disable-zoom="true" hash="L3163263083634770684101473529353" style="--media-width:100.0%;--ratio:1.5;"><img src="../assets/responsive/L3163263083634770684101473529353-1280.webp" srcset="../assets/responsive/L3163263083634770684101473529353-640.webp 640w, ../assets/responsive/L3163263083634770684101473529353-1280.webp 1280w, ../assets/responsive/L3163263083634770684101473529353-1920.webp 1920w" sizes="(max-width:800px) calc(100vw - 40px), calc(60vw - 96px)" loading="eager" decoding="async" width="3840" height="2560" alt="Theory as Apparatus — image 1"></media-item>
 <div class="project-film"><media-item browser-default="true" disable-zoom="true" hash="H3163262031838317089330259488265" scale="76.2%" style="--media-width:76.2%;--ratio:1.3333333333333333;" data-film="xiU9H3UhupE"><div class="film-stage"><img class="film-poster" src="../assets/responsive/L3163263083634770684101473529353-1280.webp" srcset="../assets/responsive/L3163263083634770684101473529353-640.webp 640w, ../assets/responsive/L3163263083634770684101473529353-1280.webp 1280w, ../assets/responsive/L3163263083634770684101473529353-1920.webp 1920w" sizes="(max-width:800px) calc(100vw - 40px), calc(60vw - 96px)" loading="lazy" decoding="async" alt="" width="200" height="150"><button class="film-play" type="button" aria-label="Play film: Theory as Apparatus" hidden><span class="film-play-icon" aria-hidden="true">▷</span><span>Play film</span></button></div><a class="film-external" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xiU9H3UhupE">Open on YouTube <span aria-hidden="true">↗</span></a></media-item></div>
 <span class="copy"><sup><i><u><span style="--font-scale: 1.2;" id="concept-2" data-section role="heading" aria-level="2">Concept</span></u></i></sup>
-<br />Kandinsky described artistic formation as a movement from external perception, through internal impulse, toward deliberate organization.<br />
-In this project, these ideas are no longer treated only as concepts to be read.<br />
+<br />Kandinsky distinguished Impression, Improvisation, and Composition as different sources of artistic formation. This project interprets those categories through physical sound controls.<br />
 <br />
 They become physical rules that determine how the apparatus behaves.<br />
 <br />
@@ -58,7 +57,7 @@ They become physical rules that determine how the apparatus behaves.<br />
 <i>Improvisation</i> disturbs that material through randomness, interruption, and instability.<br />
 <i>Composition</i> gathers the disturbed sound into a more sustained musical structure.<br />
 <br />
-Each stage depends on what the previous stage has already produced. The user therefore encounters Kandinsky’s theory not through explanation, but through action and listening. <br />
+The project connects the layers so that later sound can develop from earlier material. This serial relationship is an interpretation made through the apparatus, rather than a sequence prescribed by Kandinsky. <br />
 <br />
 Instead of asking:<br />
 <b>“What musical note corresponds to blue?”</b><br />
@@ -77,18 +76,18 @@ An RGBC sensor mounted on a servo-driven tonearm continuously reads red, green, 
 The radial position of the sensor determines which region of the painting is sampled, allowing different paths through the same image to generate different sonic material.     <br />
 <br />
 <i><b>Reading Controls</b></i><br />
-Three rotary controls determine how the painting is read:<br />
+The original project documentation describes three rotary controls for reading the painting:<br />
 - rotation speed → controls the pace of color events<br />
 - scanning radius → selects which color ring is sensed<br />
 - sampling frequency → controls the resolution of the reading<br />
 These controls alter the conditions of perception before the sound itself is formed. <br />
 <br />
 <i><b>Formation Controls</b></i><br />
-Three sliders transform the sensed color through Kandinsky’s three stages:<br />
+Three sliders connect sensed color, variation, and organization:<br />
 - Impression → color becomes audible<br />
 - Improvisation → sound becomes unstable and fragmented<br />
 - Composition → fragments are gathered into harmonic structure<br />
-The three controls are intentionally dependent rather than independent. A later layer acts on material produced by the layers before it. <br />
+The layers use material from earlier layers. Later software revisions explore how an operator can select recent sound material and let it recur for a limited time. These revised rules are distinct from the earlier control mapping shown in the project documentation. <br />
 <br />
 <i><b>From Painting to Sound</b></i><br />
 The system follows a continuous chain:<br />
@@ -105,7 +104,7 @@ The user changes how the painting is read, how its color data is disturbed, and 
 <br />
 Each Kandinsky disc becomes a different playable sound source.<br />
 <br />
-The same painting can generate different outcomes depending on:<br />
+In the original control mapping, the same painting can generate different outcomes depending on:<br />
 - rotation speed<br />
 - sensor position<br />
 - sampling frequency<br />
@@ -126,12 +125,12 @@ The physical interface resembles familiar instruments such as a record player, m
 <br />
 Instead, they expose a sequence of dependencies.<br />
 <br />
-During studio demonstrations, participants initially often interpreted the sliders as independent mixer channels, then gradually noticed that later layers changed material produced by earlier ones. <br />
+The dependent layers offer a way to explore how sensed material changes as it is varied and organized through sound. <br />
 <br />
 The apparatus turns theory from something interpreted intellectually into something encountered physically.</span><media-item class="zoomable" hash="Y3163264015435154079392054308361" style="--media-width:100.0%;--ratio:1.3281584582441113;" data-zoom><img src="../assets/responsive/Y3163264015435154079392054308361-1280.webp" srcset="../assets/responsive/Y3163264015435154079392054308361-640.webp 640w, ../assets/responsive/Y3163264015435154079392054308361-1280.webp 1280w, ../assets/responsive/Y3163264015435154079392054308361-1920.webp 1920w" sizes="(max-width:800px) calc(100vw - 40px), calc(60vw - 96px)" loading="lazy" decoding="async" data-original="../assets/media/Y3163264015435154079392054308361.jpg" width="2481" height="1868" alt="Theory as Apparatus — image 9"></media-item><br />
 <media-item class="zoomable" hash="D3163264015453600823465763859977" style="--media-width:100.0%;--ratio:2.4598612487611495;" data-zoom><img src="../assets/responsive/D3163264015453600823465763859977-1280.webp" srcset="../assets/responsive/D3163264015453600823465763859977-640.webp 640w, ../assets/responsive/D3163264015453600823465763859977-1280.webp 1280w, ../assets/responsive/D3163264015453600823465763859977-1920.webp 1920w" sizes="(max-width:800px) calc(100vw - 40px), calc(60vw - 96px)" loading="lazy" decoding="async" data-original="../assets/media/D3163264015453600823465763859977.jpg" width="2482" height="1009" alt="Theory as Apparatus — image 10"></media-item><br />
 
 
 <span class="copy"><sup><i><u><span style="--font-scale: 1.2;" id="reflection-6" data-section role="heading" aria-level="2">Reflection</span></u></i></sup>
-<br /><ul><li>Transforms art theory from a reference into an operating system</li><li>Moves color-to-sound translation beyond fixed one-to-one mapping</li><li>Makes dependency itself a material of interaction</li><li>Turns a static painting into a temporal and performable object</li><li>Allows users to understand theoretical relationships through physical operation</li><li>Explores how interpretation can become something the body can test, hear, and revise</li></ul></span><nav class="project-neighbors" aria-label="Continue exploring"><a href="../int%E2%80%93%CE%B4-identity-receipt/index.html"><span class="neighbor-label">Previous project <span aria-hidden="true">↖</span></span><span class="neighbor-name">Identity Receipt</span></a><a href="../int%E2%80%93%CE%B6-observer-and-intruder/index.html"><span class="neighbor-label">Next project <span aria-hidden="true">↗</span></span><span class="neighbor-name">Observer and Intruder</span></a></nav></bodycopy></div></div></article></main>
+<br /><ul><li>Transforms art theory from a reference into an operating system</li><li>Moves color-to-sound translation beyond fixed one-to-one mapping</li><li>Makes dependency itself a material of interaction</li><li>Turns a static painting into a temporal and performable object</li><li>Offers a physical way to explore relationships between sensed material, variation, and sound organization</li><li>Explores how interpretation can become something the body can test, hear, and revise</li></ul></span><nav class="project-neighbors" aria-label="Continue exploring"><a href="../int%E2%80%93%CE%B4-identity-receipt/index.html"><span class="neighbor-label">Previous project <span aria-hidden="true">↖</span></span><span class="neighbor-name">Identity Receipt</span></a><a href="../int%E2%80%93%CE%B6-observer-and-intruder/index.html"><span class="neighbor-label">Next project <span aria-hidden="true">↗</span></span><span class="neighbor-name">Observer and Intruder</span></a></nav></bodycopy></div></div></article></main>
 </body></html>
