@@ -92,5 +92,24 @@ media-item[data-loop].is-playing video{opacity:1}
 
 /* Publication metadata shares the same quiet hierarchy on every project. */
 .project-page .project-subtitle{margin:8px 0 18px;font:400 17px/1.45 var(--portfolio-font);color:var(--next-ink)}
-.project-page .project-publication{margin:12px 0 22px;font:400 14px/1.55 var(--portfolio-font);color:#4f585e;overflow-wrap:break-word}
+.project-page .project-publication{margin:0 0 22px;overflow-wrap:anywhere}
 .project-publication a{font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* Publication details follow the tools without an empty line. */
+.project-page :is(.project-tools,.phenaki-tools,.project-publication,.project-resource){display:block;margin-top:0!important;--font-size:1.4rem;--font-scale:.8;font-size:calc(1.4rem * .8)!important;line-height:1.45!important;font-family:var(--portfolio-font);font-weight:400;color:#626b70}
+.project-page :is(.project-tools,.phenaki-tools){margin-bottom:0!important}
+.project-page :is(.project-tools,.phenaki-tools,.project-publication,.project-resource) :where(*){font-size:inherit!important;line-height:inherit!important}
+.project-resource{margin-bottom:22px}
+.project-resource a{color:inherit;text-underline-offset:3px}
+.paper-revision .paper-meta{margin:10px 0 0;font-size:1.4rem;line-height:1.4}
+.paper-revision .project-subtitle{margin-bottom:10px}
+.paper-revision .paper-section{margin:26px 0 0}
+.paper-revision .project-publication+.paper-section{margin-top:0}
+.paper-revision .paper-section>h2{margin:0 0 8px;font:italic 400 18px/1.4 var(--portfolio-font)!important;text-decoration:underline;text-underline-offset:3px;letter-spacing:0;color:#555}
+.paper-revision .copy p{margin:0 0 14px;font-size:inherit;line-height:inherit}
+.paper-revision .copy p:last-child{margin-bottom:0}
+.paper-revision .copy :is(strong,em){font-size:inherit;line-height:inherit}
+.paper-revision .paper-figure{margin:22px 0 26px}
+.paper-revision .paper-figure media-item{margin:0!important}
+.paper-revision .paper-figure figcaption{--font-size:12px;--font-scale:1;margin:8px 0 0;font:400 12px/1.5 var(--portfolio-font)!important;letter-spacing:0;color:#626b70}
+.paper-revision .paper-film{margin:0 0 26px}
