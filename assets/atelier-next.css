@@ -83,7 +83,7 @@ media-item[data-loop].is-playing video{opacity:1}
   .reader-contents a{min-height:44px}
   .project-neighbors{gap:20px;margin-top:28px;padding-top:18px}
   .neighbor-name{font-size:18px!important}
-  .neighbor-label{font-size:10px!important;gap:8px}
+  .neighbor-label{font-size:11px!important;gap:8px}
 }
 @media(prefers-reduced-motion:reduce){
   .film-stage>.film-poster,.project-reader,.reader-contents summary span,.reader-contents a,.reader-contents a::before{transition:none;transform:none}
@@ -113,3 +113,16 @@ media-item[data-loop].is-playing video{opacity:1}
 .paper-revision .paper-figure media-item{margin:0!important}
 .paper-revision .paper-figure figcaption{--font-size:12px;--font-scale:1;margin:8px 0 0;font:400 12px/1.5 var(--portfolio-font)!important;letter-spacing:0;color:#626b70}
 .paper-revision .paper-film{margin:0 0 26px}
+
+/* Shared project metadata; guidance and collaboration stay explicit. */
+main .project-page .project-header{margin:0 0 22px}
+main .project-page .project-header>p{margin:0}
+main .project-page .project-header .project-subtitle{margin:8px 0 0}
+main .project-page .project-header .project-meta{font-size:inherit;line-height:1.4}
+main .project-page .project-header>[data-project-title]+.project-meta{margin-top:8px}
+main .project-page .project-header .project-credit{--font-size:12px;--font-scale:1}
+main .project-page .project-header+:is(.paper-section,.phenaki-section){margin-top:0!important}
+/* Padding gives every image-to-film boundary the same non-collapsing gap. */
+main .project-page .project-before-film{margin-bottom:0!important}
+main .project-page media-item.project-before-film{display:block}
+main .project-page .project-film{margin:0 0 26px;padding-top:24px}
