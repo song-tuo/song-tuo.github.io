@@ -5,7 +5,7 @@
   // Serif metrics and ink masks must be sampled from the loaded local face.
   await window.SongDongFontsReady;
   const FONT = '"Bodoni Moda", Georgia, serif';
-  const width = 1072, height = 1108, duration = 69;
+  const width = 1072, height = 805, duration = 69;
   const sculptureDuration = 5.35, typingStart = sculptureDuration, typingEnd = 65.75;
   const loopStart = 68.15;
   let field = null;
@@ -17,12 +17,7 @@
     "Song Dong designs and builds tangible",
     "interfaces to study how a change of",
     "medium shapes what people notice in",
-    "an image or a story. This work spans",
-    "computational methods for translating",
-    "visual patterns into physical form and",
-    "interactive installations that use",
-    "familiar objects to share firsthand",
-    "accounts of everyday life. Dong pairs",
+    "an image or a story. Dong pairs",
     "technical tests with reader studies to",
     "ask whether the relationships a design",
     "preserves are the ones that matter to",
