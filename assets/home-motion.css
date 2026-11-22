@@ -15,3 +15,15 @@
 .home-motion-toggle[hidden]{display:none}
 @media(hover:none){.home-motion-toggle{opacity:.65;min-height:36px}}
 @media(prefers-reduced-motion:reduce){.home-motion-toggle{transition:none}}
+
+/* The opening composition fits both axes of the right-hand viewport. */
+main .home-page.page{height:100vh;height:100dvh;min-height:0!important}
+.home-page>.page-layout{height:100%;min-height:0}
+.home-page .page-content{height:100%;min-height:0;padding:1.5rem!important}
+.home-page bodycopy{height:100%;min-height:0;display:grid;place-items:center;container-type:size}
+.home-page .home-stage{display:flex;flex-direction:column;width:min(91.5cqw,calc(100cqh * var(--home-stage-ratio)));min-width:0;line-height:0}
+.home-page .home-stage>.home-animation{display:block;width:100%;flex:none;margin:0}
+@media(max-width:800px){
+  main .home-page.page{height:calc(100vh - 66px);height:calc(100dvh - 66px)}
+  .home-page .page-content{padding:15px!important;padding-bottom:max(15px,env(safe-area-inset-bottom))!important}
+}
