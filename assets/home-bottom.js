@@ -5,7 +5,7 @@
   // Serif metrics and ink masks must be sampled from the loaded local face.
   await window.SongDongFontsReady;
   const FONT = '"Bodoni Moda", Georgia, serif';
-  const width = 1072, height = 744, duration = 69;
+  const width = 1072, height = 1108, duration = 69;
   const sculptureDuration = 5.35, typingStart = sculptureDuration, typingEnd = 65.75;
   const loopStart = 68.15;
   let field = null;
@@ -14,26 +14,32 @@
     field = window.SongDongTextField?.create(element, width, height);
   }
   const lines = [
-    "Song Dong is a design researcher",
-    "with a background in architecture,",
-    "focused on tangible and embodied",
-    "interaction. Combining physical computing,",
-    "material experimentation, and iterative",
-    "prototyping, they explore how computation",
-    "takes physical form and how physical",
-    "interaction shapes perception and creative",
-    "expression. Their empirical research",
-    "examines how interfaces and evidence",
-    "influence the ways people interpret",
-    "and judge computational systems."
+    "Song Dong designs and builds tangible",
+    "interfaces to study how a change of",
+    "medium shapes what people notice in",
+    "an image or a story. This work spans",
+    "computational methods for translating",
+    "visual patterns into physical form and",
+    "interactive installations that use",
+    "familiar objects to share firsthand",
+    "accounts of everyday life. Dong pairs",
+    "technical tests with reader studies to",
+    "ask whether the relationships a design",
+    "preserves are the ones that matter to",
+    "the people using it. In related work on",
+    "AI interfaces, Dong examines how a",
+    "scoring rule can reward readers for",
+    "agreeing with an on-screen label even",
+    "when the underlying evidence leaves",
+    "the claim unresolved."
   ];
   const text = lines.join(' ');
   const clamp = (n, a = 0, b = 1) => Math.max(a, Math.min(b, n));
   const smooth = n => {n = clamp(n); return n * n * (3 - 2 * n);};
-  // The uneven cadence follows the source, with room for a readable final hold.
+  // Preserve the reveal cadence while scaling every cue to the full paragraph.
   const reveal = [[4.97, 0], [5.5, 1], [6, 3], [6.5, 6], [7, 9], [8, 15],
     [9, 21], [10, 27], [11, 31], [17.23, 69], [27.6, 134], [37.93, 202],
-    [48.3, 267], [58.63, 333], [68.8, text.length]];
+    [48.3, 267], [58.63, 333], [68.8, 448]].map(([time, count]) => [time, count * text.length / 448]);
   const glyphs = [];
   // Sample by distance instead of angle: letters stay apart at the waist.
   // A single unbroken ribbon also avoids the rigid, stacked-ring appearance.
@@ -180,7 +186,7 @@
     out.angle = angle; out.scale = 1500 / (1500 - z1);
     out.depth = clamp((z1 + 300) / 600);
     out.x = 560 + driftX + rotatedX * out.scale;
-    out.y = 352 + driftY + rotatedY * out.scale - dissolve * (12 + 9 * Math.cos(g.phase));
+    out.y = height / 2 - 20 + driftY + rotatedY * out.scale - dissolve * (12 + 9 * Math.cos(g.phase));
     out.z = z1;
     const settle = .018 * Math.sin(time * 1.8 + g.phase);
     const side = .54 + .46 * Math.abs(Math.sin(angle));
